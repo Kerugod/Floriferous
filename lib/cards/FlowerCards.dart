@@ -6,15 +6,18 @@ class FLowerCards extends GardenCards {
   String color = "";
   String typeFlower = "";
   String? bug;
+  /*
+   
+  */
 
   FLowerCards() {
     typeCard = "flower";
 
-    _defineTypeColor();
-    _defineColor();
-    _defineBug();
+    defineTypeColor();
+    defineColor();
+    defineBug();
   }
-  void _defineTypeColor() {
+  void defineTypeColor() {
     switch (Random().nextInt(5)) {
       case 0:
         typeFlower = "Daisy";
@@ -34,7 +37,7 @@ class FLowerCards extends GardenCards {
     }
   }
 
-  void _defineColor() {
+  void defineColor() {
     switch (Random().nextInt(5)) {
       case 0:
         color = "Red";
@@ -54,7 +57,7 @@ class FLowerCards extends GardenCards {
     }
   }
 
-  void _defineBug() {
+  void defineBug() {
     //Definir si la carta tendrá un bug o no...
     if (Random().nextBool() == false) {
       //Dependiendo del tipo de flor el orden de los bugs es distinto...
