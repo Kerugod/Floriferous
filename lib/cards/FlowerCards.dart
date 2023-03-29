@@ -1,60 +1,22 @@
-import 'dart:math';
+//import 'dart:math';
 
 import 'GardenCards.dart';
 
 class FLowerCards extends GardenCards {
-  String color = "";
-  String typeFlower = "";
+  String? color;
+  String? typeFlower;
   String? bug;
-  /*
-   
-  */
-
-  FLowerCards() {
+  FLowerCards(String this.color, String this.typeFlower, String this.bug) {
     typeCard = "flower";
-
-    defineTypeColor();
-    defineColor();
-    defineBug();
   }
+
+  /*
   void defineTypeColor() {
-    switch (Random().nextInt(5)) {
-      case 0:
-        typeFlower = "Daisy";
-        break;
-      case 1:
-        typeFlower = "Lily";
-        break;
-      case 2:
-        typeFlower = "Mum";
-        break;
-      case 3:
-        typeFlower = "Poppy";
-        break;
-      case 4:
-        typeFlower = "Tulip";
-        break;
-    }
+    typeFlower = Random().nextInt(5);
   }
 
   void defineColor() {
-    switch (Random().nextInt(5)) {
-      case 0:
-        color = "Red";
-        break;
-      case 1:
-        color = "Violet";
-        break;
-      case 2:
-        color = "Purple";
-        break;
-      case 3:
-        color = "White";
-        break;
-      case 4:
-        color = "Yellow";
-        break;
-    }
+    color = Random().nextInt(5);
   }
 
   void defineBug() {
@@ -62,98 +24,98 @@ class FLowerCards extends GardenCards {
     if (Random().nextBool() == false) {
       //Dependiendo del tipo de flor el orden de los bugs es distinto...
       switch (typeFlower) {
-        case "Daisy":
+        case 0:
           //Dependiendo del color tiene asignado un bug...
           switch (color) {
-            case "Red":
+            case 0:
               bug = "Bee";
               break;
-            case "Violet":
+            case 1:
               bug = "Ladybug";
               break;
-            case "Purple":
+            case 2:
               bug = "Moth";
               break;
-            case "White":
+            case 3:
               bug = "Butterfly";
               break;
-            case "Yellow":
+            case 4:
               bug = "Bettle";
               break;
           }
           break;
-        case "Lily":
+        case 1:
           switch (color) {
-            case "Red":
+            case 0:
               bug = "Butterfly";
               break;
-            case "Violet":
+            case 1:
               bug = "Moth";
               break;
-            case "Purple":
+            case 2:
               bug = "Bee";
               break;
-            case "White":
+            case 3:
               bug = "Bettle";
               break;
-            case "Yellow":
+            case 4:
               bug = "Ladybug";
               break;
           }
           break;
-        case "Mum":
+        case 2:
           switch (color) {
-            case "Red":
+            case 0:
               bug = "Bettle";
               break;
-            case "Violet":
+            case 1:
               bug = "Bee";
               break;
-            case "Purple":
+            case 2:
               bug = "Butterfly";
               break;
-            case "White":
+            case 3:
               bug = "Ladybug";
               break;
-            case "Yellow":
+            case 4:
               bug = "Moth";
               break;
           }
           break;
-        case "Poppy":
+        case 3:
           switch (color) {
-            case "Red":
+            case 0:
               bug = "Ladybug";
               break;
-            case "Violet":
+            case 1:
               bug = "Butterfly";
               break;
-            case "Purple":
+            case 2:
               bug = "Bettle";
               break;
-            case "White":
+            case 3:
               bug = "Moth";
               break;
-            case "Yellow":
+            case 4:
               bug = "Bee";
               break;
           }
           break;
-        case "Tulip":
+        case 4:
           switch (color) {
-            case "Red":
+            case 0:
               bug = "Moth";
               break;
-            case "Violet":
+            case 1:
               bug = "Bettle";
               break;
-            case "Purple":
+            case 2:
               bug = "Ladybug";
               break;
-            case "White":
+            case 3:
               bug = "Bee";
               break;
-            case "Yellow":
+            case 4:
               bug = "Butterfly";
               break;
           }
@@ -161,4 +123,5 @@ class FLowerCards extends GardenCards {
       }
     }
   }
+  */
 }

@@ -6,6 +6,7 @@ import 'cards/ScultureCards.dart';
 import 'package:flutter/material.dart';
 
 import 'cards/Vase.dart';
+import 'decks/gardenDeck.dart';
 
 class Garden extends Scaffold {
   Column cards = new Column();
@@ -17,34 +18,14 @@ class Garden extends Scaffold {
 
   List<List<List<GardenCards>>> flowers = List.empty();
 
-  void _randomCards() {
+  void _randomGardenCards() {
+    var deck = Deck();
+    deck.reloadCards();
     for (int i = 0; i < 5; i++) {
-      switch (Random().nextInt(3)) {
-        case 0:
-          firstRow.add(_obtainNewFlowerCard());
-          break;
-        case 1:
-          firstRow.add(new ScultureCards());
-          break;
-        case 2:
-          firstRow.add(new Vase());
-          break;
-      }
+      firstRow.add(deck.obtainCard());
     }
-  }
-
-  FLowerCards _obtainNewFlowerCard() {
-    FLowerCards fc = new FLowerCards();
-
-    if (flowers.length < fc.color!) {}
-    int found = flowers[fc.color!][fc.typeFlower!].indexOf(fc);
-
-    if (found == -1) {
-      flowers[fc.color!][fc.typeFlower!].add(fc);
-    } else {
-      _obtainNewFlowerCard();
+    for (int i = 0; i < 5; i++) {
+      secondRow.add(deck.obtainCard());
     }
-
-    return fc;
   }
 }

@@ -1,5 +1,6 @@
 abstract class GardenCards {
-  String typeCard = "";
+  var typeCard = "";
+  var twist = false;
   String getTypeCard() {
     return typeCard;
   }
