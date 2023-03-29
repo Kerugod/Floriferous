@@ -70,5 +70,17 @@ void main() {
 
       expect(daisy && lily && mum && poppy && tulip, true);
     });
+
+    test('Saber si salen cartas sin bugs', () {
+      bool salio = false;
+      for (int i = 0; i < 1000; i++) {
+        FLowerCards fc = new FLowerCards();
+        if (fc.bug == null) {
+          salio = true;
+        }
+      }
+
+      expect(salio, true);
+    });
   });
 }
