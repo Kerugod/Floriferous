@@ -15,7 +15,7 @@ class FLowerCards extends GardenCards {
     _defineBug();
   }
   void _defineTypeColor() {
-    switch (Random().nextInt(4)) {
+    switch (Random().nextInt(5)) {
       case 0:
         typeFlower = "Daisy";
         break;
@@ -35,7 +35,7 @@ class FLowerCards extends GardenCards {
   }
 
   void _defineColor() {
-    switch (Random().nextInt(4)) {
+    switch (Random().nextInt(5)) {
       case 0:
         color = "Red";
         break;

@@ -45,7 +45,7 @@ void main() {
           tulip = false;
       for (int i = 0; i < 1000; i++) {
         FLowerCards fc = new FLowerCards();
-        switch (fc.color) {
+        switch (fc.typeFlower) {
           case "Daisy":
             daisy = true;
             break;
