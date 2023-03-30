@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:a/cards/FlowerCards.dart';
-import 'package:a/cards/ScultureCards.dart';
-import 'package:a/cards/Vase.dart';
-import '../cards/GardenCards.dart';
+import 'package:a/garden_cards/FlowerCards.dart';
+import 'package:a/garden_cards/ScultureCards.dart';
+import 'package:a/garden_cards/Vase.dart';
+import '../garden_cards/GardenCards.dart';
 
-class Deck {
+class GardenDeck {
   //Mi mazo con cartas de tipo jardin...
   static var deck;
 
@@ -73,12 +73,6 @@ class Deck {
       FLowerCards("White", "Poppy", "Bee"),
       FLowerCards("White", "Tulip", ""),
       FLowerCards("White", "Tulip", "Butterfly"),
-      //Agregar cartas de escultura...
-      ScultureCards(),
-      ScultureCards(),
-      ScultureCards(),
-      ScultureCards(),
-      ScultureCards(),
       //Agregar cartas de florero...
       Vase(),
       Vase(),

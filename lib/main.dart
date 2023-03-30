@@ -36,12 +36,38 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Text("Hola mundo")],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Container(
+          child: Column(
+        children: [
+          Column(
+            children: [
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo")
+            ],
+          ),
+          Column(
+            children: [
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo")
+            ],
+          ),
+          Column(
+            children: [
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo"),
+              Text("hola mundo")
+            ],
+          )
+        ],
+      )),
     );
   }
 }

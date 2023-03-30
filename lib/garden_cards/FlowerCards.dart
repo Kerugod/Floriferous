@@ -3,12 +3,10 @@
 import 'GardenCards.dart';
 
 class FLowerCards extends GardenCards {
-  String? color;
-  String? typeFlower;
-  String? bug;
-  FLowerCards(String this.color, String this.typeFlower, String this.bug) {
-    typeCard = "flower";
-  }
+  String color;
+  String typeFlower;
+  String bug;
+  FLowerCards(this.color, this.typeFlower, this.bug);
 
   /*
   void defineTypeColor() {
