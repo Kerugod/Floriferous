@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //Text("█"),
             Text(stone),
             Text(rowFlower.typeFlower),
             Text(rowFlower.color),
@@ -157,87 +158,196 @@ class _MyHomePageState extends State<MyHomePage> {
     var firstRow = garden.getFirstRow();
     var secondRow = garden.getSecondRow();
     var desireRow = garden.getDesireRow();
+    var bountyRow = garden.getBountyRow();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Container(
-          child: Column(
-        children: [
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Container(
+            //Peon y garden
+            child: Column(children: [
           Row(
             children: [
+              SizedBox(
+                width: 150,
+                height: 100,
+              ),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 0, 1))),
+                    width: 150,
+                    height: 100,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(bountyRow[0].conditions[0] +
+                            "-" +
+                            bountyRow[0].conditions[1] +
+                            "-" +
+                            bountyRow[0].conditions[2]),
+                        Text("5|3|2")
+                      ],
+                    ),
+                  )),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 1, 1))),
+                    width: 150,
+                    height: 100,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(bountyRow[1].conditions[0] +
+                            "-" +
+                            bountyRow[1].conditions[1] +
+                            "-" +
+                            bountyRow[1].conditions[2]),
+                        Text("5|3|2")
+                      ],
+                    ),
+                  )),
               Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 2, 1))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 3, 1))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 4, 1))),
+                margin: EdgeInsets.all(10.0),
+                child: SizedBox(
+                    width: 150,
+                    height: 100,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(bountyRow[2].conditions[0] +
+                            "-" +
+                            bountyRow[2].conditions[1] +
+                            "-" +
+                            bountyRow[2].conditions[2]),
+                        Text("5|3|2")
+                      ],
+                    )),
+              )
             ],
           ),
           Row(
             children: [
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 0, 2))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 1, 2))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 2, 2))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 3, 2))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 4, 2))),
-            ],
-          ),
-          Row(
-            children: [
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 70, child: dataDesire(desireRow, 0))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 70, child: dataDesire(desireRow, 1))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 70, child: dataDesire(desireRow, 2))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 70, child: dataDesire(desireRow, 3))),
-              Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 100, height: 70, child: dataDesire(desireRow, 4))),
+              SizedBox(
+                width: 100,
+                height: 500,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text("█")],
+                ),
+              ),
+              Container(
+                  child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(firstRow, 0, 1))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(firstRow, 1, 1))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(firstRow, 2, 1))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(firstRow, 3, 1))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(firstRow, 4, 1))),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(secondRow, 0, 2))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(secondRow, 1, 2))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(secondRow, 2, 2))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(secondRow, 3, 2))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 200,
+                              child: data(secondRow, 4, 2))),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 70,
+                              child: dataDesire(desireRow, 0))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 70,
+                              child: dataDesire(desireRow, 1))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 70,
+                              child: dataDesire(desireRow, 2))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 70,
+                              child: dataDesire(desireRow, 3))),
+                      Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                              width: 100,
+                              height: 70,
+                              child: dataDesire(desireRow, 4))),
+                    ],
+                  )
+                ],
+              ))
             ],
           )
-        ],
-      )),
-    );
+        ])));
   }
 }
