@@ -15,7 +15,7 @@ class DesireDeck {
     }
 
     var dataCard = deckDesire[cardSelected];
-    deckDesire.remove(cardSelected);
+    deckDesire.removeWhere((element) => element == dataCard);
 
     return dataCard;
   }
