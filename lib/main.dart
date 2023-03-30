@@ -44,30 +44,70 @@ class _MyHomePageState extends State<MyHomePage> {
         column = Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center);
-      } else if (rowFlower.stones != 0) {}
-      column = Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(rowFlower.typeFlower),
-          Text(rowFlower.color),
-          Text(rowFlower.bug)
-        ],
-      );
+      } else if (rowFlower.stones != 0) {
+        var stone = "";
+        for (var i = 0; i < rowFlower.stones; i++) {
+          stone += "*";
+        }
+        column = Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(stone),
+            Text(rowFlower.typeFlower),
+            Text(rowFlower.color),
+            Text(rowFlower.bug)
+          ],
+        );
+      } else {
+        column = Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(rowFlower.typeFlower),
+            Text(rowFlower.color),
+            Text(rowFlower.bug)
+          ],
+        );
+      }
     } else {
       var rowVase = (row[position] as Vase);
-      column = Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(rowVase.conditions[0] +
-              "|" +
-              rowVase.conditions[1] +
-              "|" +
-              rowVase.conditions[2]),
-          Text("1|3|5"),
-        ],
-      );
+      if (rowVase.twist) {
+        column = Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center);
+      } else if (rowVase.stones != 0) {
+        var stone = "";
+        for (var i = 0; i < rowVase.stones; i++) {
+          stone += "*";
+        }
+        column = Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(stone),
+            Text(rowVase.conditions[0] +
+                "|" +
+                rowVase.conditions[1] +
+                "|" +
+                rowVase.conditions[2]),
+            Text("1|3|5"),
+          ],
+        );
+      } else {
+        column = Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(rowVase.conditions[0] +
+                "|" +
+                rowVase.conditions[1] +
+                "|" +
+                rowVase.conditions[2]),
+            Text("1|3|5"),
+          ],
+        );
+      }
     }
 
     return column;
