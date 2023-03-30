@@ -1,5 +1,7 @@
 import 'dart:math';
-import 'package:flutter_test/flutter_test.dart';
+
+import 'package:test/expect.dart';
+import 'package:test/scaffolding.dart';
 
 void main() {
   test('Esta mal el rango', () {
