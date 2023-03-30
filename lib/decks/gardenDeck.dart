@@ -7,18 +7,22 @@ import '../garden_cards/GardenCards.dart';
 
 class GardenDeck {
   //Mi mazo con cartas de tipo jardin...
-  static var deck;
+  var deck = List.empty(growable: true);
 
   GardenCards obtainCard() {
     var cardSelected;
-    if (deck?.length != null) {
-      cardSelected = Random().nextInt(deck!.length);
+    if (deck.length != null) {
+      cardSelected = Random().nextInt(deck.length);
     }
-    return deck[cardSelected];
+
+    var dataCard = deck[cardSelected];
+    deck.remove(cardSelected);
+
+    return dataCard;
   }
 
-  List<GardenCards> reloadCards() {
-    List<GardenCards> deckReloaded = [
+  void reloadCards() {
+    deck = [
       //Agregar cartas rojas...
       FLowerCards("Red", "Daisy", ""),
       FLowerCards("Red", "Daisy", "Bee"),
@@ -74,13 +78,11 @@ class GardenDeck {
       FLowerCards("White", "Tulip", ""),
       FLowerCards("White", "Tulip", "Butterfly"),
       //Agregar cartas de florero...
-      Vase(),
-      Vase(),
-      Vase(),
-      Vase(),
-      Vase()
+      Vase(["Daisy", "White", "Bee"]),
+      Vase(["Lily", "Purple", "Butterfly"]),
+      Vase(["Mum", "Violet", "Bettle"]),
+      Vase(["Poppy", "Red", "Moth"]),
+      Vase(["Tulip", "Yellow", "Ladybug"]),
     ];
-
-    return deckReloaded;
   }
 }

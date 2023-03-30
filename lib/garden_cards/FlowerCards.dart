@@ -6,7 +6,9 @@ class FLowerCards extends GardenCards {
   String color;
   String typeFlower;
   String bug;
-  FLowerCards(this.color, this.typeFlower, this.bug);
+  FLowerCards(this.color, this.typeFlower, this.bug) {
+    typeCard = "Flower";
+  }
 
   /*
   void defineTypeColor() {

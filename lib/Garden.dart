@@ -1,5 +1,3 @@
-import 'dart:html';
-import 'dart:math';
 import 'decks/DesireDeck.dart';
 import 'desire_cards/DesireCards.dart';
 import 'garden_cards/FlowerCards.dart';
@@ -12,13 +10,21 @@ import 'decks/GardenDeck.dart';
 
 class Garden extends Scaffold {
   Column cards = new Column();
-  List<GardenCards> firstRow = List.empty();
-  List<GardenCards> secondRow = List.empty();
-  List<DesireCards> desireRow = List.empty();
+  List<GardenCards> _firstRow = List.empty(growable: true);
+  List<GardenCards> _secondRow = List.empty(growable: true);
+  List<DesireCards> _desireRow = List.empty(growable: true);
 
-//color,
+  Garden() {
+    _randomGardenCards();
+  }
 
-  List<List<List<GardenCards>>> flowers = List.empty();
+  List<GardenCards> getFirstRow() {
+    return _firstRow;
+  }
+
+  List<GardenCards> getSecondRow() {
+    return _secondRow;
+  }
 
   void _randomGardenCards() {
     var gardenDeck = GardenDeck();
@@ -26,13 +32,13 @@ class Garden extends Scaffold {
     gardenDeck.reloadCards();
     desireDeck.reloadCards();
     for (int i = 0; i < 5; i++) {
-      firstRow.add(gardenDeck.obtainCard());
+      _firstRow.add(gardenDeck.obtainCard());
     }
     for (int i = 0; i < 5; i++) {
-      secondRow.add(gardenDeck.obtainCard());
+      _secondRow.add(gardenDeck.obtainCard());
     }
     for (int i = 0; i < 5; i++) {
-      desireRow.add(desireDeck.obtainCard());
+      _desireRow.add(desireDeck.obtainCard());
     }
   }
 }
