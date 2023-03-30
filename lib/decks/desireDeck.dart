@@ -6,22 +6,22 @@ import 'package:a/desire_cards/SimpleDesireCard.dart';
 import '../desire_cards/DesireCards.dart';
 
 class DesireDeck {
-  static var deck = <DesireCards>[];
+  static var deckDesire = <DesireCards>[];
 
   DesireCards obtainCard() {
     var cardSelected;
-    if (deck.length != null) {
-      cardSelected = Random().nextInt(deck.length);
+    if (deckDesire.length != null) {
+      cardSelected = Random().nextInt(deckDesire.length);
     }
 
-    var dataCard = deck[cardSelected];
-    deck.remove(cardSelected);
+    var dataCard = deckDesire[cardSelected];
+    deckDesire.remove(cardSelected);
 
     return dataCard;
   }
 
   void reloadCards() {
-    deck = [
+    deckDesire = [
       //Cartas con condiciones simples
       SimpleDesireCards(3, "Bug", "Bee"),
       SimpleDesireCards(3, "Bug", "Butterfly"),
