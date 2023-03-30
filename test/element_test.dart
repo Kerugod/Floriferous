@@ -7,22 +7,26 @@ void main() {
   var firstRow = garden.getFirstRow();
   var secondRow = garden.getSecondRow();
   var desireRow = garden.getDesireRow();
+  group(
+      'Si en alguno de estos text sale distinto de -1 es porque el algoritmo repite cartas',
+      () {
+    test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
+      expect(secondRow.indexWhere((element) => element == firstRow[0]), -1);
+    });
 
-  group('Viendo si hay valores true', () {
     test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
-      expect(firstRow[0].twist, false);
+      expect(secondRow.indexWhere((element) => element == firstRow[1]), -1);
+    });
+
+    test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
+      expect(secondRow.indexWhere((element) => element == firstRow[2]), -1);
+    });
+
+    test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
+      expect(secondRow.indexWhere((element) => element == firstRow[3]), -1);
     });
     test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
-      expect(firstRow[1].twist, false);
-    });
-    test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
-      expect(firstRow[2].twist, false);
-    });
-    test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
-      expect(firstRow[3].twist, false);
-    });
-    test('Si sale true cuando no lo tengo sentenciado es porque está mal', () {
-      expect(firstRow[4].twist, false);
+      expect(secondRow.indexWhere((element) => element == firstRow[4]), -1);
     });
   });
 }
