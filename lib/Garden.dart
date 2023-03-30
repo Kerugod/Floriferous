@@ -16,6 +16,12 @@ class Garden extends Scaffold {
 
   Garden() {
     _randomGardenCards();
+    _firstRow[1].twist = true;
+    _firstRow[3].twist = true;
+
+    _secondRow[0].stones = 1;
+    _secondRow[2].stones = 1;
+    _secondRow[4].stones = 1;
   }
 
   List<GardenCards> getFirstRow() {
@@ -24,6 +30,10 @@ class Garden extends Scaffold {
 
   List<GardenCards> getSecondRow() {
     return _secondRow;
+  }
+
+  List<DesireCards> getDesireRow() {
+    return _desireRow;
   }
 
   void _randomGardenCards() {

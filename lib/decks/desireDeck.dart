@@ -13,7 +13,11 @@ class DesireDeck {
     if (deck.length != null) {
       cardSelected = Random().nextInt(deck.length);
     }
-    return deck[cardSelected];
+
+    var dataCard = deck[cardSelected];
+    deck.remove(cardSelected);
+
+    return dataCard;
   }
 
   void reloadCards() {
@@ -35,11 +39,11 @@ class DesireDeck {
       SimpleDesireCards(2, "Color", "White"),
       SimpleDesireCards(2, "Color", "Yellow"),
       //Cartas con condiciones complejas
-      MultiConDesireCards([0, 1, 2, 4, 7], "Bug", "="),
+      MultiConDesireCards([0, 2, 4, 7, 10], "Bug", "="),
       MultiConDesireCards([0, 1, 2, 4, 7], "Bug", "/="),
-      MultiConDesireCards([0, 0, 1, 3, 5], "Color", "="),
+      MultiConDesireCards([0, 1, 2, 4, 7], "Color", "="),
       MultiConDesireCards([0, 0, 1, 3, 5], "Color", "/="),
-      MultiConDesireCards([0, 0, 1, 3, 5], "TypeFlower", "="),
+      MultiConDesireCards([0, 1, 2, 4, 7], "TypeFlower", "="),
       MultiConDesireCards([0, 0, 1, 3, 5], "TypeFlower", "/=")
     ];
   }

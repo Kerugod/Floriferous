@@ -1,9 +1,12 @@
+import 'package:a/desire_cards/MultiConDesireCards.dart';
+import 'package:a/desire_cards/SimpleDesireCard.dart';
 import 'package:a/garden_cards/FlowerCards.dart';
 import 'package:a/garden_cards/GardenCards.dart';
 import 'package:a/garden_cards/Vase.dart';
 import 'package:flutter/material.dart';
 
 import 'Garden.dart';
+import 'desire_cards/DesireCards.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,10 +36,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Column data(List<GardenCards> row, int position) {
+  Column data(List<GardenCards> row, int position, int numRow) {
     var column;
     if (row[position].typeCard == "Flower") {
       var rowFlower = (row[position] as FLowerCards);
+      if (rowFlower.twist) {
+        column = Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center);
+      } else if (rowFlower.stones != 0) {}
       column = Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -65,11 +73,50 @@ class _MyHomePageState extends State<MyHomePage> {
     return column;
   }
 
+  Column dataDesire(List<DesireCards> row, int position) {
+    var column;
+    if (row[position].typeDesireCard == "Simple") {
+      var rowSimpleDesire = (row[position] as SimpleDesireCards);
+      column = Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(rowSimpleDesire.points.toString() + "+"),
+          Text(rowSimpleDesire.flowerProperty),
+          Text(rowSimpleDesire.condition)
+        ],
+      );
+    } else {
+      var rowMultiDesire = (row[position] as MultiConDesireCards);
+      column = Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(rowMultiDesire.points[0].toString() +
+              "|" +
+              rowMultiDesire.points[1].toString() +
+              "|" +
+              rowMultiDesire.points[2].toString() +
+              "|" +
+              rowMultiDesire.points[3].toString() +
+              "|" +
+              rowMultiDesire.points[4].toString()),
+          Text(rowMultiDesire.flowerProperty +
+              rowMultiDesire.comparision +
+              rowMultiDesire.flowerProperty),
+        ],
+      );
+    }
+
+    return column;
+  }
+
   @override
   Widget build(BuildContext context) {
     var garden = Garden();
     var firstRow = garden.getFirstRow();
     var secondRow = garden.getSecondRow();
+    var desireRow = garden.getDesireRow();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -82,23 +129,23 @@ class _MyHomePageState extends State<MyHomePage> {
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 0))),
+                      width: 100, height: 200, child: data(firstRow, 0, 1))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 1))),
+                      width: 100, height: 200, child: data(firstRow, 1, 1))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 2))),
+                      width: 100, height: 200, child: data(firstRow, 2, 1))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 3))),
+                      width: 100, height: 200, child: data(firstRow, 3, 1))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(firstRow, 4))),
+                      width: 100, height: 200, child: data(firstRow, 4, 1))),
             ],
           ),
           Row(
@@ -106,32 +153,47 @@ class _MyHomePageState extends State<MyHomePage> {
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 0))),
+                      width: 100, height: 200, child: data(secondRow, 0, 2))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 1))),
+                      width: 100, height: 200, child: data(secondRow, 1, 2))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 2))),
+                      width: 100, height: 200, child: data(secondRow, 2, 2))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 3))),
+                      width: 100, height: 200, child: data(secondRow, 3, 2))),
               Card(
                   margin: EdgeInsets.all(10.0),
                   child: SizedBox(
-                      width: 100, height: 200, child: data(secondRow, 4))),
+                      width: 100, height: 200, child: data(secondRow, 4, 2))),
             ],
           ),
           Row(
             children: [
-              Text("hola mundo"),
-              Text("hola mundo"),
-              Text("hola mundo"),
-              Text("hola mundo"),
-              Text("hola mundo")
+              Card(
+                  margin: EdgeInsets.all(10.0),
+                  child: SizedBox(
+                      width: 100, height: 70, child: dataDesire(desireRow, 0))),
+              Card(
+                  margin: EdgeInsets.all(10.0),
+                  child: SizedBox(
+                      width: 100, height: 70, child: dataDesire(desireRow, 1))),
+              Card(
+                  margin: EdgeInsets.all(10.0),
+                  child: SizedBox(
+                      width: 100, height: 70, child: dataDesire(desireRow, 2))),
+              Card(
+                  margin: EdgeInsets.all(10.0),
+                  child: SizedBox(
+                      width: 100, height: 70, child: dataDesire(desireRow, 3))),
+              Card(
+                  margin: EdgeInsets.all(10.0),
+                  child: SizedBox(
+                      width: 100, height: 70, child: dataDesire(desireRow, 4))),
             ],
           )
         ],
