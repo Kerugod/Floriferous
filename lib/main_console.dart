@@ -145,6 +145,66 @@ void printGarden() {
   print(line);
   print(printRow);
   print(line);
+
+  print(
+      "___________________________________________________________________________________________________________________________________");
+
+  printMyDeck();
+}
+
+void printMyDeck() {
+  var printRow = "";
+  print("  Mis cartas de jardin:");
+  var flowerWon = player.getFlowerWon();
+  var vaseWon = player.getVaseWon();
+  printRow = "";
+
+  for (var i = 0; i < flowerWon.length; i++) {
+    printRow += "|| " + _addAndTwistFCard(flowerWon[i]) + " ||";
+  }
+
+  var line = "  " + _lineEquals(printRow);
+
+  print(line);
+  print(printRow);
+  print(line);
+
+  printRow = "";
+
+  for (var i = 0; i < vaseWon.length; i++) {
+    printRow += "|| " + _addAndTwistFCard(vaseWon[i]) + " ||";
+  }
+
+  print(line);
+  print(printRow);
+  print(line);
+
+  print("  Mis cartas de deseo:");
+
+  var simpleWon = player.getSimpleWon();
+  var multiWon = player.getMultiWon();
+
+  printRow = "";
+
+  for (var i = 0; i < simpleWon.length; i++) {
+    printRow += "|| " + _addAndTwistDCard(simpleWon[i]) + " ||";
+  }
+
+  line = "  " + _lineEquals(printRow);
+  print(line);
+  print(printRow);
+  print(line);
+
+  printRow = "";
+
+  for (var i = 0; i < multiWon.length; i++) {
+    printRow += "|| " + _addAndTwistDCard(multiWon[i]) + " ||";
+  }
+
+  line = "  " + _lineEquals(printRow);
+  print(line);
+  print(printRow);
+  print(line);
 }
 
 //Metodos de soporte
@@ -285,7 +345,6 @@ void playerMove() {
           deletePastCard();
           player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
           printGarden();
-          print(playerMove);
           break;
         default:
           print("Introduzca una de las opciones: \"1-3\"");
@@ -321,7 +380,6 @@ void playerMove() {
           deletePastCard();
           player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
           printGarden();
-          print(playerMove);
           break;
         default:
           print("Introduzca una de las opciones: \"1-3\"");
@@ -332,7 +390,6 @@ void playerMove() {
     player.lastMove();
     player.newRound();
     getCards();
-    print(firstRow[4].typeCard);
     printGarden();
   }
 }

@@ -1,3 +1,5 @@
+import 'package:floriferous_console/main_console.dart';
+
 import 'cards/Cards.dart';
 import 'cards/desire_cards/DesireCards.dart';
 import 'cards/desire_cards/MultiConDesireCards.dart';
@@ -14,6 +16,22 @@ class Player {
   static var simpleDesireWon = List.empty(growable: true);
   static var multiConDesireWon = List.empty(growable: true);
   static var flowerWon = List.empty(growable: true);
+
+  List<dynamic> getVaseWon() {
+    return vaseWon;
+  }
+
+  List<dynamic> getSimpleWon() {
+    return simpleDesireWon;
+  }
+
+  List<dynamic> getMultiWon() {
+    return multiConDesireWon;
+  }
+
+  List<dynamic> getFlowerWon() {
+    return flowerWon;
+  }
 
   void newRound() {
     rounds++;
@@ -45,9 +63,13 @@ class Player {
       if (gardenCard.typeGardenCard.compareTo("Flower") == 0) {
         //Definir que tipo de carta de jardin es
         gardenCard = gardenCard as FLowerCards;
+        gardenCard.empty = false;
+        gardenCard.playerHere = false;
         flowerWon.add(gardenCard);
       } else {
         gardenCard = gardenCard as Vase;
+        gardenCard.empty = false;
+        gardenCard.playerHere = false;
         vaseWon.add(gardenCard);
       }
     } else {
@@ -55,9 +77,13 @@ class Player {
       if (desireCard.typeDesireCard.compareTo("Simple") == 0) {
         //Definir que tipo de carta de deseo es
         desireCard = desireCard as SimpleDesireCards;
+        desireCard.empty = false;
+        desireCard.playerHere = false;
         simpleDesireWon.add(desireCard);
       } else {
         desireCard = desireCard as MultiConDesireCards;
+        desireCard.empty = false;
+        desireCard.playerHere = false;
         multiConDesireWon.add(desireCard);
       }
     }
@@ -67,8 +93,6 @@ class Player {
     return playerPosition!;
   }
 }
-
-class Card {}
 
 class PlayerPosition {
   var columnPosition = -1;
