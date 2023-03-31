@@ -17,6 +17,8 @@ class Player {
   var multiConDesireWon = List.empty(growable: true);
   var flowerWon = List.empty(growable: true);
 
+  var points = 0;
+
   List<dynamic> getVaseWon() {
     return vaseWon;
   }
@@ -57,6 +59,9 @@ class Player {
   void setChoosedCard(var column, var row, Cards card) {
     playerPosition!.columnPosition = column;
     playerPosition!.rowPosition = row;
+    if (card.stones > 0) {
+      points += card.stones;
+    }
     if (card.typeCard == "Garden") {
       //Saber que tipo de carta es
       var gardenCard = card as GardenCards;

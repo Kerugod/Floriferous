@@ -157,6 +157,7 @@ void printGarden() {
 
 void printMyDeck() {
   var printRow = "";
+  print("  Mis piedras: ${player.points}");
   print("  Mis cartas de jardin:");
   var flowerWon = player.getFlowerWon();
   var vaseWon = player.getVaseWon();
@@ -276,14 +277,17 @@ void deletePastCard() {
     switch (player.getPlayerPosition().rowPosition) {
       case 0:
         firstRow[past].playerHere = false;
+        firstRow[past].stones = 0;
         firstRow[past].empty = true;
         break;
       case 1:
         secondRow[past].playerHere = false;
+        secondRow[past].stones = 0;
         secondRow[past].empty = true;
         break;
       case 2:
         desireRow[past].playerHere = false;
+        desireRow[past].stones = 0;
         desireRow[past].empty = true;
         break;
     }
