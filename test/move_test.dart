@@ -10,10 +10,7 @@ void main() {
   player.newGame();
 
   group('El método está mal', () {
-    test('qwe', () {
-      expect(player.fake(0, 0, FLowerCards("Red", "Lily", "Bettle")), "Flower");
-    });
-    test('asd', () {
+    test('Comparando con los equals y con el compareTo', () {
       player.setChoosedCard(0, 0, FLowerCards("Red", "Lily", "Bettle"));
     });
 

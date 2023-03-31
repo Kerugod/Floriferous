@@ -14,6 +14,10 @@ class Garden {
   List<DesireCards> _desireRow = List.empty(growable: true);
   List<BountyCards> _bountyRow = List.empty(growable: true);
 
+  var gardenDeck = GardenDeck();
+  var desireDeck = DesireDeck();
+  var bountyDeck = BountyDeck();
+
   Garden() {
     _randomGardenCards();
     _firstRow[1].twist = true;
@@ -40,10 +44,22 @@ class Garden {
     return _bountyRow;
   }
 
+  void newGarden() {
+    _firstRow = List.empty(growable: true);
+    _secondRow = List.empty(growable: true);
+    _desireRow = List.empty(growable: true);
+    for (int i = 0; i < 5; i++) {
+      _firstRow.add(gardenDeck.obtainCard());
+    }
+    for (int i = 0; i < 5; i++) {
+      _secondRow.add(gardenDeck.obtainCard());
+    }
+    for (int i = 0; i < 5; i++) {
+      _desireRow.add(desireDeck.obtainCard());
+    }
+  }
+
   void _randomGardenCards() {
-    var gardenDeck = GardenDeck();
-    var desireDeck = DesireDeck();
-    var bountyDeck = BountyDeck();
     gardenDeck.reloadCards();
     desireDeck.reloadCards();
     bountyDeck.reloadCards();

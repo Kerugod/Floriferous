@@ -7,7 +7,7 @@ import 'cards/garden_cards/GardenCards.dart';
 import 'cards/garden_cards/Vase.dart';
 
 class Player {
-  static var playerPosition;
+  static PlayerPosition? playerPosition;
   static var rounds;
 
   static var vaseWon = List.empty(growable: true);
@@ -19,18 +19,26 @@ class Player {
     rounds++;
   }
 
+  void lastMove() {
+    if (rounds == 1) {
+      playerPosition!.columnPosition--;
+    } else {
+      playerPosition!.columnPosition++;
+    }
+  }
+
   void newGame() {
     playerPosition = PlayerPosition();
     rounds = 0;
   }
 
-  int? getRounds() {
+  int getRounds() {
     return rounds;
   }
 
   void setChoosedCard(var column, var row, Cards card) {
-    playerPosition.columnPosition = column;
-    playerPosition.columnPosition = row;
+    playerPosition!.columnPosition = column;
+    playerPosition!.rowPosition = row;
     if (card.typeCard == "Garden") {
       //Saber que tipo de carta es
       var gardenCard = card as GardenCards;
@@ -44,7 +52,7 @@ class Player {
       }
     } else {
       var desireCard = card as DesireCards;
-      if (desireCard.typeDesireCard == "Simple") {
+      if (desireCard.typeDesireCard.compareTo("Simple") == 0) {
         //Definir que tipo de carta de deseo es
         desireCard = desireCard as SimpleDesireCards;
         simpleDesireWon.add(desireCard);
@@ -53,39 +61,10 @@ class Player {
         multiConDesireWon.add(desireCard);
       }
     }
-  }
-
-  String fake(var column, var row, Cards card) {
-    playerPosition.columnPosition = column;
-    playerPosition.columnPosition = row;
-    if (card.typeCard == "Garden") {
-      //Saber que tipo de carta es
-      var gardenCard = card as GardenCards;
-      if (gardenCard.typeGardenCard.compareTo("Flower") == 0) {
-        //Definir que tipo de carta de jardin es
-        gardenCard = gardenCard as FLowerCards;
-        flowerWon.add(gardenCard);
-      } else {
-        gardenCard = gardenCard as Vase;
-        vaseWon.add(gardenCard);
-      }
-    } else {
-      var desireCard = card as DesireCards;
-      if (desireCard.typeDesireCard == "Simple") {
-        //Definir que tipo de carta de deseo es
-        desireCard = desireCard as SimpleDesireCards;
-        simpleDesireWon.add(desireCard);
-      } else {
-        desireCard = desireCard as MultiConDesireCards;
-        multiConDesireWon.add(desireCard);
-      }
-    }
-
-    return "";
   }
 
   PlayerPosition getPlayerPosition() {
-    return playerPosition;
+    return playerPosition!;
   }
 }
 

@@ -30,40 +30,17 @@ void main() {
 
   print("Bienvenido A floriferous!!!!!");
   print("¿Quieres jugar? Y/N");
-  var line;
+  var play;
   do {
-    var line = stdin.readLineSync(encoding: utf8);
-    switch (line) {
+    play = stdin.readLineSync(encoding: utf8);
+    switch (play) {
       case "Y":
-        printGarden();
         player.newGame();
+        printGarden();
         print("¿Cual carta escojes? (Filas: 1-3)");
         do {
-          line = stdin.readLineSync(encoding: utf8);
-          switch (line) {
-            case "1":
-              var playerMove = player.getPlayerPosition().columnPosition + 1;
-              firstRow[playerMove].playerHere = true;
-              deletePastCard();
-              player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
-              break;
-            case "2":
-              var playerMove = player.getPlayerPosition().columnPosition + 1;
-              secondRow[playerMove].playerHere = true;
-              deletePastCard();
-              player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
-              break;
-            case "3":
-              var playerMove = player.getPlayerPosition().columnPosition + 1;
-              desireRow[playerMove].playerHere = true;
-              deletePastCard();
-              player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
-              break;
-            default:
-              print("Introduzca una de las opciones: \"1-3\"");
-              break;
-          }
-        } while (line != "1" && line != "2" && line != "3");
+          playerMove();
+        } while (player.getRounds() < 3); //Numero de rondas
         break;
       case "N":
         print("Vuelva pronto :D");
@@ -72,7 +49,14 @@ void main() {
         print("Introduzca una de las opciones: \"Y/N\"");
         break;
     }
-  } while (line != "Y" && line != "N");
+  } while (play != "Y" && play != "N");
+}
+
+void getCards() {
+  firstRow = garden.getFirstRow();
+  secondRow = garden.getSecondRow();
+  desireRow = garden.getDesireRow();
+  bountyRow = garden.getBountyRow();
 }
 
 void printGarden() {
@@ -133,8 +117,13 @@ void printGarden() {
       _addAndTwistFCard(secondRow[4]) +
       " ||";
   line = "  " + _lineEquals(printRow);
-  if (player.getRounds() == null) {
+  if (player.getRounds() != 1 &&
+      player.getPlayerPosition().columnPosition == -1) {
     print("█");
+  } else if (player.getRounds() == 1 &&
+      player.getPlayerPosition().columnPosition == 5) {
+    print(
+        "                                                                                                                                █");
   }
   print(line);
   print(printRow);
@@ -143,15 +132,15 @@ void printGarden() {
   print("  Cartas de deseo:");
   printRow = "  || " + // Cartas de deseo
       _addAndTwistDCard(desireRow[0]) +
-      " ||" +
+      " || " +
       _addAndTwistDCard(desireRow[1]) +
-      " ||" +
+      " || " +
       _addAndTwistDCard(desireRow[2]) +
-      " ||" +
+      " || " +
       _addAndTwistDCard(desireRow[3]) +
-      " ||" +
+      " || " +
       _addAndTwistDCard(desireRow[4]) +
-      " ||";
+      " || ";
   line = "  " + _lineEquals(printRow);
   print(line);
   print(printRow);
@@ -178,6 +167,7 @@ String _addAndTwistFCard(GardenCards gardenCard) {
       card += "@";
     }
   } else {
+    card = "         ";
     for (var i = 0; i < gardenCard.stones; i++) {
       card += "@";
     }
@@ -186,7 +176,7 @@ String _addAndTwistFCard(GardenCards gardenCard) {
 }
 
 String _addAndTwistDCard(DesireCards desireCard) {
-  var card;
+  var card = "";
   if (desireCard.playerHere) {
     card = "█";
   } else if (!desireCard.empty) {
@@ -195,6 +185,7 @@ String _addAndTwistDCard(DesireCards desireCard) {
       card += "@";
     }
   } else {
+    card = "         ";
     for (var i = 0; i < desireCard.stones; i++) {
       card += "@";
     }
@@ -204,19 +195,21 @@ String _addAndTwistDCard(DesireCards desireCard) {
 
 void deletePastCard() {
   var past = player.getPlayerPosition().columnPosition;
-  switch (player.getPlayerPosition().rowPosition) {
-    case 0:
-      firstRow[past].playerHere = false;
-      firstRow[past].empty = true;
-      break;
-    case 1:
-      secondRow[past].playerHere = false;
-      secondRow[past].empty = true;
-      break;
-    case 2:
-      desireRow[past].playerHere = false;
-      desireRow[past].empty = true;
-      break;
+  if (past != 5 && past != -1) {
+    switch (player.getPlayerPosition().rowPosition) {
+      case 0:
+        firstRow[past].playerHere = false;
+        firstRow[past].empty = true;
+        break;
+      case 1:
+        secondRow[past].playerHere = false;
+        secondRow[past].empty = true;
+        break;
+      case 2:
+        desireRow[past].playerHere = false;
+        desireRow[past].empty = true;
+        break;
+    }
   }
 }
 
@@ -264,4 +257,82 @@ String _obtainDesireData(DesireCards desireCard) {
         dataDesire.flowerProperty;
   }
   return data;
+}
+
+void playerMove() {
+  String? move = "";
+  if (player.getRounds() == 0 || player.getRounds() == 2) {
+    do {
+      move = stdin.readLineSync(encoding: utf8);
+      switch (move) {
+        case "1":
+          var playerMove = player.getPlayerPosition().columnPosition + 1;
+          firstRow[playerMove].playerHere = true;
+          deletePastCard();
+          player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
+          printGarden();
+          break;
+        case "2":
+          var playerMove = player.getPlayerPosition().columnPosition + 1;
+          secondRow[playerMove].playerHere = true;
+          deletePastCard();
+          player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
+          printGarden();
+          break;
+        case "3":
+          var playerMove = player.getPlayerPosition().columnPosition + 1;
+          desireRow[playerMove].playerHere = true;
+          deletePastCard();
+          player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
+          printGarden();
+          print(playerMove);
+          break;
+        default:
+          print("Introduzca una de las opciones: \"1-3\"");
+          break;
+      }
+    } while (player.getPlayerPosition().columnPosition < 4);
+    garden.newGarden();
+    getCards();
+    player.lastMove();
+    player.newRound();
+    printGarden();
+  } else {
+    do {
+      move = stdin.readLineSync(encoding: utf8);
+      switch (move) {
+        case "1":
+          var playerMove = player.getPlayerPosition().columnPosition - 1;
+          firstRow[playerMove].playerHere = true;
+          deletePastCard();
+          player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
+          printGarden();
+          break;
+        case "2":
+          var playerMove = player.getPlayerPosition().columnPosition - 1;
+          secondRow[playerMove].playerHere = true;
+          deletePastCard();
+          player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
+          printGarden();
+          break;
+        case "3":
+          var playerMove = player.getPlayerPosition().columnPosition - 1;
+          desireRow[playerMove].playerHere = true;
+          deletePastCard();
+          player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
+          printGarden();
+          print(playerMove);
+          break;
+        default:
+          print("Introduzca una de las opciones: \"1-3\"");
+          break;
+      }
+    } while (player.getPlayerPosition().columnPosition > 0);
+    garden.newGarden();
+    player.lastMove();
+    player.newRound();
+    getCards();
+    print(firstRow[4].typeCard);
+    printGarden();
+  }
 }
