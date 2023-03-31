@@ -9,13 +9,13 @@ import 'cards/garden_cards/GardenCards.dart';
 import 'cards/garden_cards/Vase.dart';
 
 class Player {
-  static PlayerPosition? playerPosition;
-  static var rounds;
+  PlayerPosition? playerPosition;
+  var rounds;
 
-  static var vaseWon = List.empty(growable: true);
-  static var simpleDesireWon = List.empty(growable: true);
-  static var multiConDesireWon = List.empty(growable: true);
-  static var flowerWon = List.empty(growable: true);
+  var vaseWon = List.empty(growable: true);
+  var simpleDesireWon = List.empty(growable: true);
+  var multiConDesireWon = List.empty(growable: true);
+  var flowerWon = List.empty(growable: true);
 
   List<dynamic> getVaseWon() {
     return vaseWon;
@@ -62,29 +62,23 @@ class Player {
       var gardenCard = card as GardenCards;
       if (gardenCard.typeGardenCard.compareTo("Flower") == 0) {
         //Definir que tipo de carta de jardin es
-        gardenCard = gardenCard as FLowerCards;
-        gardenCard.empty = false;
-        gardenCard.playerHere = false;
-        flowerWon.add(gardenCard);
+        var newGardenCard = gardenCard as FLowerCards;
+        flowerWon.add(newGardenCard);
       } else {
-        gardenCard = gardenCard as Vase;
-        gardenCard.empty = false;
-        gardenCard.playerHere = false;
-        vaseWon.add(gardenCard);
+        var newGardenCard = gardenCard as Vase;
+        vaseWon.add(newGardenCard);
       }
     } else {
       var desireCard = card as DesireCards;
       if (desireCard.typeDesireCard.compareTo("Simple") == 0) {
         //Definir que tipo de carta de deseo es
-        desireCard = desireCard as SimpleDesireCards;
-        desireCard.empty = false;
-        desireCard.playerHere = false;
-        simpleDesireWon.add(desireCard);
+        var newDesireCard = desireCard as SimpleDesireCards;
+        newDesireCard.empty = false;
+        simpleDesireWon.add(newDesireCard);
       } else {
-        desireCard = desireCard as MultiConDesireCards;
-        desireCard.empty = false;
-        desireCard.playerHere = false;
-        multiConDesireWon.add(desireCard);
+        var newDesireCard = desireCard as MultiConDesireCards;
+        newDesireCard.empty = false;
+        multiConDesireWon.add(newDesireCard);
       }
     }
   }

@@ -3,7 +3,7 @@ import 'dart:math';
 import '../BountyCards.dart';
 
 class BountyDeck {
-  static var deckDesire = <BountyCards>[];
+  var deckDesire = <BountyCards>[];
 
   BountyCards obtainCard() {
     var cardSelected;

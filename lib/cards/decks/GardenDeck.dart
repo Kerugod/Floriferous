@@ -6,7 +6,7 @@ import '../garden_cards/GardenCards.dart';
 
 class GardenDeck {
   //Mi mazo con cartas de tipo jardin...
-  static var deckGarden = List.empty(growable: true);
+  var deckGarden = List.empty(growable: true);
 
   List obtainGardenList() {
     return deckGarden;

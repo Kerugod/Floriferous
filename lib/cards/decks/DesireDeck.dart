@@ -5,7 +5,7 @@ import '../desire_cards/SimpleDesireCard.dart';
 import '../desire_cards/DesireCards.dart';
 
 class DesireDeck {
-  static var deckDesire = <DesireCards>[];
+  var deckDesire = <DesireCards>[];
 
   DesireCards obtainCard() {
     var cardSelected;

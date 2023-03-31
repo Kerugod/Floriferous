@@ -149,6 +149,9 @@ void printGarden() {
   print(
       "___________________________________________________________________________________________________________________________________");
 
+  print(
+      "___________________________________________________________________________________________________________________________________");
+
   printMyDeck();
 }
 
@@ -160,7 +163,7 @@ void printMyDeck() {
   printRow = "";
 
   for (var i = 0; i < flowerWon.length; i++) {
-    printRow += "|| " + _addAndTwistFCard(flowerWon[i]) + " ||";
+    printRow += "|| " + _visibilityDeckCard(flowerWon[i]) + " ||";
   }
 
   var line = "  " + _lineEquals(printRow);
@@ -172,7 +175,7 @@ void printMyDeck() {
   printRow = "";
 
   for (var i = 0; i < vaseWon.length; i++) {
-    printRow += "|| " + _addAndTwistFCard(vaseWon[i]) + " ||";
+    printRow += "|| " + _visibilityDeckCard(vaseWon[i]) + " ||";
   }
 
   print(line);
@@ -187,7 +190,7 @@ void printMyDeck() {
   printRow = "";
 
   for (var i = 0; i < simpleWon.length; i++) {
-    printRow += "|| " + _addAndTwistDCard(simpleWon[i]) + " ||";
+    printRow += "|| " + _visibilityDeckCard(simpleWon[i]) + " ||";
   }
 
   line = "  " + _lineEquals(printRow);
@@ -198,13 +201,15 @@ void printMyDeck() {
   printRow = "";
 
   for (var i = 0; i < multiWon.length; i++) {
-    printRow += "|| " + _addAndTwistDCard(multiWon[i]) + " ||";
+    printRow += "|| " + _visibilityDeckCard(multiWon[i]) + " ||";
   }
 
   line = "  " + _lineEquals(printRow);
   print(line);
   print(printRow);
   print(line);
+  print(
+      "***********************************************************************************************************************************");
 }
 
 //Metodos de soporte
@@ -231,6 +236,18 @@ String _addAndTwistFCard(GardenCards gardenCard) {
     for (var i = 0; i < gardenCard.stones; i++) {
       card += "@";
     }
+  }
+  return card;
+}
+
+String _visibilityDeckCard(Cards desireCard) {
+  var card = "";
+  if (desireCard.typeCard.compareTo("Garden") == 0) {
+    desireCard = desireCard as GardenCards;
+    card = _obtainFlowerData(desireCard);
+  } else {
+    desireCard = desireCard as DesireCards;
+    card = _obtainDesireData(desireCard);
   }
   return card;
 }
@@ -270,7 +287,7 @@ void deletePastCard() {
         desireRow[past].empty = true;
         break;
     }
-  }
+  } else {}
 }
 
 String _obtainFlowerData(GardenCards gardenCard) {
