@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:floriferous_console/desire_cards/DesireCards.dart';
-import 'package:floriferous_console/desire_cards/MultiConDesireCards.dart';
-import 'package:floriferous_console/desire_cards/SimpleDesireCard.dart';
-import 'package:floriferous_console/garden_cards/FlowerCards.dart';
-import 'package:floriferous_console/garden_cards/GardenCards.dart';
-import 'package:floriferous_console/garden_cards/Vase.dart';
+import 'package:floriferous_console/cards/desire_cards/DesireCards.dart';
+import 'package:floriferous_console/cards/desire_cards/MultiConDesireCards.dart';
+import 'package:floriferous_console/cards/desire_cards/SimpleDesireCard.dart';
+import 'package:floriferous_console/cards/garden_cards/FlowerCards.dart';
+import 'package:floriferous_console/cards/garden_cards/GardenCards.dart';
+import 'package:floriferous_console/cards/garden_cards/Vase.dart';
 
 import 'Garden.dart';
 import 'Player.dart';
@@ -20,21 +20,51 @@ var desireRow = garden.getDesireRow();
 var bountyRow = garden.getBountyRow();
 
 void main() {
+  firstRow[1].twist = true;
+  firstRow[3].twist = true;
+
+  secondRow[0].stones = 1;
+  secondRow[2].stones = 1;
+  secondRow[4].stones = 1;
+
   print("Bienvenido A floriferous!!!!!");
   print("¿Quieres jugar? Y/N");
-  var line = stdin.readLineSync(encoding: utf8);
-  switch (line) {
-    case "Y":
-      printGarden();
-      break;
-    case "N":
-      print("Vuelva pronto :D");
-      break;
-  }
+  var line;
+  do {
+    var line = stdin.readLineSync(encoding: utf8);
+    switch (line) {
+      case "Y":
+        printGarden();
+        player.newGame();
+        print("¿Cual carta escojes? (Filas: 1-3)");
+        line = stdin.readLineSync(encoding: utf8);
+        switch (line) {
+          case "1":
+            player.setChoosedCard(player.getPlayerPosition().columnPosition + 1,
+                0, firstRow[player.getPlayerPosition().columnPosition + 1]);
+            break;
+          case "2":
+            player.setChoosedCard(player.getPlayerPosition().columnPosition + 1,
+                1, secondRow[player.getPlayerPosition().columnPosition + 1]);
+            break;
+          case "3":
+            player.setChoosedCard(player.getPlayerPosition().columnPosition + 1,
+                2, desireRow[player.getPlayerPosition().columnPosition + 1]);
+            break;
+        }
+        break;
+      case "N":
+        print("Vuelva pronto :D");
+        break;
+      default:
+        print("Introduzca una de las opciones: \"Y/N\"");
+        break;
+    }
+  } while (line != "Y" && line != "N");
 }
 
 void printGarden() {
-  var printRow = "|| (" +
+  var printRow = "  || (" + //Cartas de recompensa
       bountyRow[0].conditions[0] +
       "|" +
       bountyRow[0].conditions[1] +
@@ -54,74 +84,99 @@ void printGarden() {
       bountyRow[2].conditions[2] +
       ")*5|3|2 ||";
 
-  var line = lineEquals(printRow);
+  var line = "  " + _lineEquals(printRow);
 
-  print("Bounty cards:");
+  print("  Cartas de recompensa:");
   print(line);
   print(printRow);
   print(line);
 
-  printRow = "|| " +
-      _obtainFlowerCards(firstRow[0]) +
+  printRow = "  || " + //Cartas de flor, primera fila
+      _addAndTwistFCard(firstRow[0]) +
       " || " +
-      _obtainFlowerCards(firstRow[1]) +
+      _addAndTwistFCard(firstRow[1]) +
       " || " +
-      _obtainFlowerCards(firstRow[2]) +
+      _addAndTwistFCard(firstRow[2]) +
       " || " +
-      _obtainFlowerCards(firstRow[3]) +
+      _addAndTwistFCard(firstRow[3]) +
       " || " +
-      _obtainFlowerCards(firstRow[4]) +
-      "||";
-  line = lineEquals(printRow);
-  print("Garden cards:");
-  print(line);
-  print(printRow);
-  print(line);
-
-  printRow = "|| " +
-      _obtainFlowerCards(secondRow[0]) +
-      " || " +
-      _obtainFlowerCards(secondRow[1]) +
-      " || " +
-      _obtainFlowerCards(secondRow[2]) +
-      " || " +
-      _obtainFlowerCards(secondRow[3]) +
-      " || " +
-      _obtainFlowerCards(secondRow[4]) +
-      "||";
-  line = lineEquals(printRow);
-  print(line);
-  print(printRow);
-  print(line);
-
-  print("Desire cards:");
-  printRow = "|| " +
-      _obtainDesireData(desireRow[0]) +
-      " ||" +
-      _obtainDesireData(desireRow[1]) +
-      " ||" +
-      _obtainDesireData(desireRow[2]) +
-      " ||" +
-      _obtainDesireData(desireRow[3]) +
-      " ||" +
-      _obtainDesireData(desireRow[4]) +
+      _addAndTwistFCard(firstRow[4]) +
       " ||";
+
+  line = "  " + _lineEquals(printRow);
+  print("  Cartas de jardin:");
+  print(line);
+  print(printRow);
+  print(line);
+
+  printRow = "  || " + // Cartas de flor, segunda linea
+      _addAndTwistFCard(secondRow[0]) +
+      " || " +
+      _addAndTwistFCard(secondRow[1]) +
+      " || " +
+      _addAndTwistFCard(secondRow[2]) +
+      " || " +
+      _addAndTwistFCard(secondRow[3]) +
+      " || " +
+      _addAndTwistFCard(secondRow[4]) +
+      " ||";
+  line = "  " + _lineEquals(printRow);
+  if (player.getRounds() == null) {
+    print("█");
+  }
+  print(line);
+  print(printRow);
+  print(line);
+
+  print("  Cartas de deseo:");
+  printRow = "  || " + // Cartas de deseo
+      _addAndTwistDCard(desireRow[0]) +
+      " ||" +
+      _addAndTwistDCard(desireRow[1]) +
+      " ||" +
+      _addAndTwistDCard(desireRow[2]) +
+      " ||" +
+      _addAndTwistDCard(desireRow[3]) +
+      " ||" +
+      _addAndTwistDCard(desireRow[4]) +
+      " ||";
+  line = "  " + _lineEquals(printRow);
   print(line);
   print(printRow);
   print(line);
 }
 
-String lineEquals(String value) {
+//Metodos de soporte
+
+String _lineEquals(String value) {
   var line = "";
-  for (var i = 0; i < value.length; i++) {
+  for (var i = 0; i < value.length - 2; i++) {
     line += "=";
   }
   return line;
 }
 
-String _obtainFlowerCards(GardenCards gardenCard) {
+String _addAndTwistFCard(GardenCards gardenCard) {
+  var card =
+      gardenCard.twist ? "Carta volteada" : _obtainFlowerData(gardenCard);
+  for (var i = 0; i < gardenCard.stones; i++) {
+    card += "@";
+  }
+  return card;
+}
+
+String _addAndTwistDCard(DesireCards desireCard) {
+  var card =
+      desireCard.twist ? "Carta volteada" : _obtainDesireData(desireCard);
+  for (var i = 0; i < desireCard.stones; i++) {
+    card += "@";
+  }
+  return card;
+}
+
+String _obtainFlowerData(GardenCards gardenCard) {
   var data = "";
-  if (gardenCard.typeCard == "Flower") {
+  if (gardenCard.typeGardenCard == "Flower") {
     var flowerCard = gardenCard as FLowerCards;
     data = flowerCard.typeFlower + "|" + flowerCard.color;
     if (flowerCard.bug != "") {
@@ -144,7 +199,7 @@ String _obtainDesireData(DesireCards desireCard) {
   var data = "";
   if (desireCard.typeDesireCard == "Simple") {
     var dataDesire = desireCard as SimpleDesireCards;
-    data = dataDesire.flowerProperty + "*" + dataDesire.condition;
+    data = dataDesire.condition + "*" + dataDesire.points.toString();
   } else {
     var dataDesire = desireCard as MultiConDesireCards;
     data = "(" +
@@ -163,20 +218,4 @@ String _obtainDesireData(DesireCards desireCard) {
         dataDesire.flowerProperty;
   }
   return data;
-}
-
-String _espacios(String value) {
-  var espacios = "";
-  for (var i = 0; i < (value.length / 2) - 2.7; i++) {
-    espacios += " ";
-  }
-  return espacios;
-}
-
-String _espaciosAtras(String value) {
-  var espacios = "";
-  for (var i = 0; i < (value.length / 2) - 1.5; i++) {
-    espacios += " ";
-  }
-  return espacios;
 }

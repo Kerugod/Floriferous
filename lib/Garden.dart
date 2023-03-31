@@ -1,12 +1,12 @@
-import 'BountyCards.dart';
-import 'decks/BountyDeck.dart';
-import 'decks/DesireDeck.dart';
-import 'desire_cards/DesireCards.dart';
-import 'garden_cards/FlowerCards.dart';
-import 'garden_cards/GardenCards.dart';
-import 'garden_cards/ScultureCards.dart';
-import 'garden_cards/Vase.dart';
-import 'decks/GardenDeck.dart';
+import 'cards/BountyCards.dart';
+import 'cards/decks/BountyDeck.dart';
+import 'cards/decks/DesireDeck.dart';
+import 'cards/desire_cards/DesireCards.dart';
+import 'cards/garden_cards/FlowerCards.dart';
+import 'cards/garden_cards/GardenCards.dart';
+import 'cards/garden_cards/ScultureCards.dart';
+import 'cards/garden_cards/Vase.dart';
+import 'cards/decks/GardenDeck.dart';
 
 class Garden {
   List<GardenCards> _firstRow = List.empty(growable: true);

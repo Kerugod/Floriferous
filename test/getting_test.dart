@@ -1,4 +1,4 @@
-import 'package:floriferous_console/decks/GardenDeck.dart';
+import 'package:floriferous_console/cards/decks/GardenDeck.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
