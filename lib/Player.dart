@@ -59,31 +59,33 @@ class Player {
   void setChoosedCard(var column, var row, Cards card) {
     playerPosition!.columnPosition = column;
     playerPosition!.rowPosition = row;
-    if (card.stones > 0) {
-      points += card.stones;
-    }
-    if (card.typeCard == "Garden") {
-      //Saber que tipo de carta es
-      var gardenCard = card as GardenCards;
-      if (gardenCard.typeGardenCard.compareTo("Flower") == 0) {
-        //Definir que tipo de carta de jardin es
-        var newGardenCard = gardenCard as FLowerCards;
-        flowerWon.add(newGardenCard);
-      } else {
-        var newGardenCard = gardenCard as Vase;
-        vaseWon.add(newGardenCard);
+    if (!card.noVisualEmpty) {
+      if (card.stones > 0) {
+        points += card.stones;
       }
-    } else {
-      var desireCard = card as DesireCards;
-      if (desireCard.typeDesireCard.compareTo("Simple") == 0) {
-        //Definir que tipo de carta de deseo es
-        var newDesireCard = desireCard as SimpleDesireCards;
-        newDesireCard.empty = false;
-        simpleDesireWon.add(newDesireCard);
+      if (card.typeCard == "Garden") {
+        //Saber que tipo de carta es
+        var gardenCard = card as GardenCards;
+        if (gardenCard.typeGardenCard.compareTo("Flower") == 0) {
+          //Definir que tipo de carta de jardin es
+          var newGardenCard = gardenCard as FLowerCards;
+          flowerWon.add(newGardenCard);
+        } else {
+          var newGardenCard = gardenCard as Vase;
+          vaseWon.add(newGardenCard);
+        }
       } else {
-        var newDesireCard = desireCard as MultiConDesireCards;
-        newDesireCard.empty = false;
-        multiConDesireWon.add(newDesireCard);
+        var desireCard = card as DesireCards;
+        if (desireCard.typeDesireCard.compareTo("Simple") == 0) {
+          //Definir que tipo de carta de deseo es
+          var newDesireCard = desireCard as SimpleDesireCards;
+          newDesireCard.empty = false;
+          simpleDesireWon.add(newDesireCard);
+        } else {
+          var newDesireCard = desireCard as MultiConDesireCards;
+          newDesireCard.empty = false;
+          multiConDesireWon.add(newDesireCard);
+        }
       }
     }
   }

@@ -4,4 +4,5 @@ class Cards {
   var twist = false;
   var stones = 0;
   var empty = false;
+  var noVisualEmpty = false;
 }

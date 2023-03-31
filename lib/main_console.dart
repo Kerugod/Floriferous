@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:floriferous_console/Crow.dart';
 import 'package:floriferous_console/cards/Cards.dart';
+import 'package:floriferous_console/cards/decks/CrowDeck.dart';
 import 'package:floriferous_console/cards/desire_cards/DesireCards.dart';
 import 'package:floriferous_console/cards/desire_cards/MultiConDesireCards.dart';
 import 'package:floriferous_console/cards/desire_cards/SimpleDesireCard.dart';
@@ -14,6 +16,8 @@ import 'Player.dart';
 
 var player = Player();
 var garden = Garden();
+var crow = Crow();
+var crowDeck = CrowDeck();
 
 var firstRow = garden.getFirstRow();
 var secondRow = garden.getSecondRow();
@@ -340,6 +344,92 @@ String _obtainDesireData(DesireCards desireCard) {
   return data;
 }
 
+void crowMove() {
+  var crowCard = crowDeck.obtainCard();
+  var cardChange;
+  if (player.getRounds() != 1) {
+    cardChange = player.getPlayerPosition().columnPosition + 1;
+  } else {
+    cardChange = player.getPlayerPosition().columnPosition - 1;
+  }
+  if (cardChange != 5 && cardChange != -1) {
+    if (crowCard.action.compareTo("Twist") == 0) {
+      switch (crowCard.rowCard) {
+        case 0:
+          firstRow[cardChange].twist = true;
+          break;
+        case 1:
+          secondRow[cardChange].twist = true;
+          break;
+        case 2:
+          desireRow[cardChange].twist = true;
+          break;
+      }
+    } else if (crowCard.action.compareTo("OneStone") == 0) {
+      switch (crowCard.rowCard) {
+        case 0:
+          firstRow[cardChange].empty = true;
+          firstRow[cardChange].noVisualEmpty = true;
+          firstRow[cardChange].stones = firstRow[cardChange].stones + 1;
+          break;
+        case 1:
+          secondRow[cardChange].empty = true;
+          secondRow[cardChange].noVisualEmpty = true;
+          secondRow[cardChange].stones = secondRow[cardChange].stones + 1;
+          break;
+        case 2:
+          desireRow[cardChange].empty = true;
+          desireRow[cardChange].noVisualEmpty = true;
+          desireRow[cardChange].stones = desireRow[cardChange].stones + 1;
+          break;
+      }
+    } else {
+      switch (crowCard.rowCard) {
+        case 0:
+          firstRow[cardChange].empty = true;
+          firstRow[cardChange].noVisualEmpty = true;
+          firstRow[cardChange].stones = firstRow[cardChange].stones + 2;
+          break;
+        case 1:
+          secondRow[cardChange].empty = true;
+          secondRow[cardChange].noVisualEmpty = true;
+          secondRow[cardChange].stones = secondRow[cardChange].stones + 2;
+          break;
+        case 2:
+          desireRow[cardChange].empty = true;
+          desireRow[cardChange].noVisualEmpty = true;
+          desireRow[cardChange].stones = desireRow[cardChange].stones + 2;
+          break;
+      }
+    }
+    var row = "";
+    var action = "";
+    switch (crowCard.rowCard) {
+      case 0:
+        row = "primera";
+        break;
+      case 1:
+        row = "segunda";
+        break;
+      case 2:
+        row = "tercera";
+        break;
+    }
+    switch (crowCard.action) {
+      case "Twist":
+        action = "voltear la";
+        break;
+      case "OneStone":
+        action = "colocar una piedra en la";
+        break;
+      case "TwoStone":
+        action = "colocar dos piedras en la";
+        break;
+    }
+    print("El cuervo dice \"" + action + " " + row + " carta\"");
+  }
+}
+
 void playerMove() {
   String? move = "";
   if (player.getRounds() == 0 || player.getRounds() == 2) {
@@ -351,6 +441,10 @@ void playerMove() {
           firstRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
+          if (!desireRow[playerMove].noVisualEmpty) {
+            firstRow[playerMove].stones = 0;
+          }
+          crowMove();
           printGarden();
           break;
         case "2":
@@ -358,6 +452,10 @@ void playerMove() {
           secondRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
+          if (!desireRow[playerMove].noVisualEmpty) {
+            secondRow[playerMove].stones = 0;
+          }
+          crowMove();
           printGarden();
           break;
         case "3":
@@ -365,6 +463,10 @@ void playerMove() {
           desireRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
+          if (!desireRow[playerMove].noVisualEmpty) {
+            desireRow[playerMove].stones = 0;
+          }
+          crowMove();
           printGarden();
           break;
         default:
@@ -386,6 +488,10 @@ void playerMove() {
           firstRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
+          if (!desireRow[playerMove].noVisualEmpty) {
+            firstRow[playerMove].stones = 0;
+          }
+          crowMove();
           printGarden();
           break;
         case "2":
@@ -393,6 +499,10 @@ void playerMove() {
           secondRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
+          if (!desireRow[playerMove].noVisualEmpty) {
+            secondRow[playerMove].stones = 0;
+          }
+          crowMove();
           printGarden();
           break;
         case "3":
@@ -400,6 +510,10 @@ void playerMove() {
           desireRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
+          if (!desireRow[playerMove].noVisualEmpty) {
+            desireRow[playerMove].stones = 0;
+          }
+          crowMove();
           printGarden();
           break;
         default:
