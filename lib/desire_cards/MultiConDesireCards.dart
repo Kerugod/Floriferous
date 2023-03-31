@@ -1,4 +1,4 @@
-import 'package:floriferous_console/desire_cards/DesireCards.dart';
+import '../desire_cards/DesireCards.dart';
 
 class MultiConDesireCards extends DesireCards {
   var comparision;

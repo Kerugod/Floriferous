@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:floriferous_console/garden_cards/FlowerCards.dart';
-import 'package:floriferous_console/garden_cards/Vase.dart';
+import '../garden_cards/FlowerCards.dart';
+import '../garden_cards/Vase.dart';
 import '../garden_cards/GardenCards.dart';
 
 class GardenDeck {

@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:floriferous_console/desire_cards/MultiConDesireCards.dart';
-import 'package:floriferous_console/desire_cards/SimpleDesireCard.dart';
-import 'package:floriferous_console/desire_cards/DesireCards.dart';
+import '../desire_cards/MultiConDesireCards.dart';
+import '../desire_cards/SimpleDesireCard.dart';
+import '../desire_cards/DesireCards.dart';
 
 class DesireDeck {
   static var deckDesire = <DesireCards>[];

@@ -1,6 +1,6 @@
-import 'package:floriferous_console/Garden.dart';
+import '../lib/Garden.dart';
 import 'package:test/expect.dart';
-import 'package:test/scaffolding.dart';
+import 'package:test/test.dart';
 
 void main() {
   var garden = Garden();

@@ -1,4 +1,4 @@
-import 'package:floriferous_console/desire_cards/DesireCards.dart';
+import '../desire_cards/DesireCards.dart';
 
 class SimpleDesireCards extends DesireCards {
   var condition;

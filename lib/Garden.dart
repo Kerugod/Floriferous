@@ -1,5 +1,4 @@
-import 'package:floriferous_console/BountyCards.dart';
-
+import 'BountyCards.dart';
 import 'decks/BountyDeck.dart';
 import 'decks/DesireDeck.dart';
 import 'desire_cards/DesireCards.dart';
