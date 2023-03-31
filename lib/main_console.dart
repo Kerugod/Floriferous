@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:floriferous_console/cards/Cards.dart';
 import 'package:floriferous_console/cards/desire_cards/DesireCards.dart';
 import 'package:floriferous_console/cards/desire_cards/MultiConDesireCards.dart';
 import 'package:floriferous_console/cards/desire_cards/SimpleDesireCard.dart';
@@ -37,21 +38,32 @@ void main() {
         printGarden();
         player.newGame();
         print("¿Cual carta escojes? (Filas: 1-3)");
-        line = stdin.readLineSync(encoding: utf8);
-        switch (line) {
-          case "1":
-            player.setChoosedCard(player.getPlayerPosition().columnPosition + 1,
-                0, firstRow[player.getPlayerPosition().columnPosition + 1]);
-            break;
-          case "2":
-            player.setChoosedCard(player.getPlayerPosition().columnPosition + 1,
-                1, secondRow[player.getPlayerPosition().columnPosition + 1]);
-            break;
-          case "3":
-            player.setChoosedCard(player.getPlayerPosition().columnPosition + 1,
-                2, desireRow[player.getPlayerPosition().columnPosition + 1]);
-            break;
-        }
+        do {
+          line = stdin.readLineSync(encoding: utf8);
+          switch (line) {
+            case "1":
+              var playerMove = player.getPlayerPosition().columnPosition + 1;
+              firstRow[playerMove].playerHere = true;
+              deletePastCard();
+              player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
+              break;
+            case "2":
+              var playerMove = player.getPlayerPosition().columnPosition + 1;
+              secondRow[playerMove].playerHere = true;
+              deletePastCard();
+              player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
+              break;
+            case "3":
+              var playerMove = player.getPlayerPosition().columnPosition + 1;
+              desireRow[playerMove].playerHere = true;
+              deletePastCard();
+              player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
+              break;
+            default:
+              print("Introduzca una de las opciones: \"1-3\"");
+              break;
+          }
+        } while (line != "1" && line != "2" && line != "3");
         break;
       case "N":
         print("Vuelva pronto :D");
@@ -157,21 +169,55 @@ String _lineEquals(String value) {
 }
 
 String _addAndTwistFCard(GardenCards gardenCard) {
-  var card =
-      gardenCard.twist ? "Carta volteada" : _obtainFlowerData(gardenCard);
-  for (var i = 0; i < gardenCard.stones; i++) {
-    card += "@";
+  var card = "";
+  if (gardenCard.playerHere) {
+    card = "█";
+  } else if (!gardenCard.empty) {
+    card = gardenCard.twist ? "Carta volteada" : _obtainFlowerData(gardenCard);
+    for (var i = 0; i < gardenCard.stones; i++) {
+      card += "@";
+    }
+  } else {
+    for (var i = 0; i < gardenCard.stones; i++) {
+      card += "@";
+    }
   }
   return card;
 }
 
 String _addAndTwistDCard(DesireCards desireCard) {
-  var card =
-      desireCard.twist ? "Carta volteada" : _obtainDesireData(desireCard);
-  for (var i = 0; i < desireCard.stones; i++) {
-    card += "@";
+  var card;
+  if (desireCard.playerHere) {
+    card = "█";
+  } else if (!desireCard.empty) {
+    card = desireCard.twist ? "Carta volteada" : _obtainDesireData(desireCard);
+    for (var i = 0; i < desireCard.stones; i++) {
+      card += "@";
+    }
+  } else {
+    for (var i = 0; i < desireCard.stones; i++) {
+      card += "@";
+    }
   }
   return card;
+}
+
+void deletePastCard() {
+  var past = player.getPlayerPosition().columnPosition;
+  switch (player.getPlayerPosition().rowPosition) {
+    case 0:
+      firstRow[past].playerHere = false;
+      firstRow[past].empty = true;
+      break;
+    case 1:
+      secondRow[past].playerHere = false;
+      secondRow[past].empty = true;
+      break;
+    case 2:
+      desireRow[past].playerHere = false;
+      desireRow[past].empty = true;
+      break;
+  }
 }
 
 String _obtainFlowerData(GardenCards gardenCard) {

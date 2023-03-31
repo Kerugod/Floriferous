@@ -1,3 +1,4 @@
+import 'cards/Cards.dart';
 import 'cards/desire_cards/DesireCards.dart';
 import 'cards/desire_cards/MultiConDesireCards.dart';
 import 'cards/desire_cards/SimpleDesireCard.dart';
@@ -30,10 +31,10 @@ class Player {
   void setChoosedCard(var column, var row, Cards card) {
     playerPosition.columnPosition = column;
     playerPosition.columnPosition = row;
-    if (card.getTypeCard() == "Garden") {
+    if (card.typeCard == "Garden") {
       //Saber que tipo de carta es
       var gardenCard = card as GardenCards;
-      if (gardenCard.typeGardenCard == "FLower") {
+      if (gardenCard.typeGardenCard.compareTo("Flower") == 0) {
         //Definir que tipo de carta de jardin es
         gardenCard = gardenCard as FLowerCards;
         flowerWon.add(gardenCard);
@@ -52,6 +53,35 @@ class Player {
         multiConDesireWon.add(desireCard);
       }
     }
+  }
+
+  String fake(var column, var row, Cards card) {
+    playerPosition.columnPosition = column;
+    playerPosition.columnPosition = row;
+    if (card.typeCard == "Garden") {
+      //Saber que tipo de carta es
+      var gardenCard = card as GardenCards;
+      if (gardenCard.typeGardenCard.compareTo("Flower") == 0) {
+        //Definir que tipo de carta de jardin es
+        gardenCard = gardenCard as FLowerCards;
+        flowerWon.add(gardenCard);
+      } else {
+        gardenCard = gardenCard as Vase;
+        vaseWon.add(gardenCard);
+      }
+    } else {
+      var desireCard = card as DesireCards;
+      if (desireCard.typeDesireCard == "Simple") {
+        //Definir que tipo de carta de deseo es
+        desireCard = desireCard as SimpleDesireCards;
+        simpleDesireWon.add(desireCard);
+      } else {
+        desireCard = desireCard as MultiConDesireCards;
+        multiConDesireWon.add(desireCard);
+      }
+    }
+
+    return "";
   }
 
   PlayerPosition getPlayerPosition() {
