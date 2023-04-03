@@ -34,8 +34,9 @@ void main() {
     switch (play) {
       case "Y":
         player.newGame();
+        print("El cuervo tiene $crowStones piedras.");
         printGarden();
-        print("¿Cual carta escojes? (Filas: 1-3)");
+        print("¿Cuál carta escoges? (Filas: 1-3)");
         do {
           playerMove();
         } while (player.getRounds() < 3); //Numero de rondas
@@ -106,8 +107,8 @@ void printGarden() {
 
 void printMyDeck(String backLine) {
   var printRow = "";
-  print("  Mis piedras: ${player.points}");
-  print("  Mis cartas de jardin:");
+  print("  Mis piedras: ${player.stones}");
+  print("  Mis cartas de jardín:");
   var flowerWon = player.getFlowerWon();
   var vaseWon = player.getVaseWon();
   printRow = "";
@@ -276,7 +277,7 @@ void deletePastCard() {
         desireRow[past].empty = true;
         break;
     }
-  } else {}
+  }
 }
 
 String _obtainFlowerData(GardenCards gardenCard) {
@@ -408,23 +409,194 @@ void crowMove() {
         action = "colocar dos piedras en la";
         break;
     }
-    print("El cuervo tiene $crowStones piedras.");
     print("El cuervo dice \"" + action + " " + row + " carta\"");
   }
 }
 
-void crowAndBountyActions() {
+void roundFinish() {
   for (var i = 0; i < 5; i++) {
-    if (firstRow[i].stones > 0 && firstRow[i].empty == true) {
+    if (firstRow[i].stones > 0 && firstRow[i].noVisualEmpty == true) {
       crowStones += firstRow[i].stones;
     }
-    if (secondRow[i].stones > 0 && secondRow[i].empty == true) {
+    if (secondRow[i].stones > 0 && secondRow[i].noVisualEmpty == true) {
       crowStones += secondRow[i].stones;
     }
-    if (desireRow[i].stones > 0 && desireRow[i].empty == true) {
+    if (desireRow[i].stones > 0 && desireRow[i].noVisualEmpty == true) {
       crowStones += desireRow[i].stones;
     }
   }
+
+  print("El cuervo tiene $crowStones piedras.");
+
+  if (crowStones >= 4) {
+    print("El cuervo tiene cuatro o más piedras.");
+
+    if ((crowStones - player.stones) < 4) {
+      var play;
+      do {
+        print(
+            "Tienes las suficientes piedras para que el cuervo no te quite una carta (Recuerda que esta acción eliminará la totalidad de tus piedras. A menos de que tengas más que el cuervo). ¿Deseas usarlas? (Y/N)");
+        play = stdin.readLineSync(encoding: utf8);
+        switch (play) {
+          case "Y":
+            if (crowStones <= player.stones) {
+              player.stones -= crowStones;
+              crowStones = 0;
+            } else {
+              crowStones -= player.stones;
+              player.stones = 0;
+            }
+            print("**** NUEVA RONDA ****");
+            print("El cuervo tiene $crowStones piedras.");
+            break;
+          case "N":
+            stealCard();
+            break;
+          default:
+            print("Introduzca una de las opciones: \"Y/N\"");
+            break;
+        }
+      } while (play != "Y" && play != "N");
+    } else {
+      stealCard();
+    }
+  } else if (player.stones > 0) {
+    print(
+        "¿Deseas quitarle piedras al cuervo? (Esta acción eliminará la totalidad de tus piedras. A menos de que tengas más que el cuervo) (Y/N)");
+    var play;
+
+    do {
+      play = stdin.readLineSync(encoding: utf8);
+      switch (play) {
+        case "Y":
+          if (crowStones <= player.stones) {
+            player.stones -= crowStones;
+            crowStones = 0;
+          } else {
+            crowStones -= player.stones;
+            player.stones = 0;
+          }
+          print("**** NUEVA RONDA ****");
+          print("El cuervo tiene $crowStones piedras.");
+          break;
+        case "N":
+          break;
+        default:
+          print("Introduzca una de las opciones: \"Y/N\"");
+          break;
+      }
+    } while (play != "Y" && play != "N");
+  }
+}
+
+void stealCard() {
+  printMyDeck("");
+  var tipoCarta;
+  var regresar;
+  do {
+    print(
+        "Elige cual tipo de carta eliminarás. (Flor = F / Florero = Fl / Deseo simple = DS / Deseo Multicondicional = DM)");
+    do {
+      tipoCarta = stdin.readLineSync(encoding: utf8);
+      switch (tipoCarta) {
+        case "F":
+          if (player.flowerWon.isEmpty) {
+            print("No tienes cartas de flor");
+            regresar = "R";
+          } else {
+            print("¿Cuál carta eliminará?");
+            try {
+              var eliminar = int.parse(stdin.readLineSync() as String);
+              if (eliminar > 0 && eliminar <= player.flowerWon.length) {
+                player.flowerWon.removeWhere(
+                    (element) => element == player.flowerWon[eliminar - 1]);
+                crowStones = 0;
+              } else {
+                print("Introduzca un número del 1 en adelante.");
+                tipoCarta = "E";
+              }
+            } on Exception catch (_, e) {
+              print(e);
+              print("Introduzca un número del 1 en adelante.");
+              tipoCarta = "E";
+            }
+          }
+          break;
+        case "Fl":
+          if (player.vaseWon.isEmpty) {
+            print("No tienes cartas de florero");
+            regresar = "R";
+          } else {
+            print("¿Cuál carta eliminará?");
+            try {
+              var eliminar = stdin.readByteSync();
+              if (eliminar > 0 && eliminar <= player.vaseWon.length) {
+                player.vaseWon.removeWhere(
+                    (element) => element == player.vaseWon[eliminar - 1]);
+                crowStones = 0;
+              } else {
+                print("Introduzca un número del 1 en adelante.");
+                tipoCarta = "E";
+              }
+            } on Exception catch (_, e) {
+              print("Introduzca un número del 1 en adelante.");
+              tipoCarta = "E";
+            }
+          }
+          break;
+        case "DS":
+          if (player.simpleDesireWon.isEmpty) {
+            print("No tienes cartas de deseo simple.");
+            regresar = "R";
+          } else {
+            print("¿Cuál carta eliminará?");
+            try {
+              var eliminar = stdin.readByteSync();
+              if (eliminar > 0 && eliminar <= player.simpleDesireWon.length) {
+                player.simpleDesireWon.removeWhere((element) =>
+                    element == player.simpleDesireWon[eliminar - 1]);
+                crowStones = 0;
+              } else {
+                print("Introduzca un número del 1 en adelante.");
+                tipoCarta = "E";
+              }
+            } on Exception catch (_, e) {
+              print("Introduzca un número del 1 en adelante.");
+              tipoCarta = "E";
+            }
+          }
+          break;
+        case "DM":
+          if (player.multiConDesireWon.isEmpty) {
+            print("No tienes cartas de deseo multicondicional.");
+            regresar = "R";
+          } else {
+            print("¿Cuál carta eliminará?");
+            try {
+              var eliminar = stdin.readByteSync();
+              if (eliminar > 0 && eliminar <= player.multiConDesireWon.length) {
+                player.multiConDesireWon.removeWhere((element) =>
+                    element == player.multiConDesireWon[eliminar - 1]);
+                crowStones = 0;
+              } else {
+                print("Introduzca un número del 1 en adelante.");
+                tipoCarta = "E";
+              }
+            } on Exception catch (_, e) {
+              print("Introduzca un número del 1 en adelante.");
+              tipoCarta = "E";
+            }
+          }
+          break;
+        default:
+          print("Introduzca una de las opciones: \"F/Fl/DS/DM\"");
+          break;
+      }
+    } while (tipoCarta != "F" &&
+        tipoCarta != "Fl" &&
+        tipoCarta != "DS" &&
+        tipoCarta != "DM");
+  } while (regresar == "R");
 }
 
 void playerMove() {
@@ -438,9 +610,10 @@ void playerMove() {
           firstRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
-          if (!desireRow[playerMove].noVisualEmpty) {
+          if (firstRow[playerMove].noVisualEmpty) {
             firstRow[playerMove].stones = 0;
           }
+          print("El cuervo tiene $crowStones piedras.");
           crowMove();
           printGarden();
           break;
@@ -449,9 +622,10 @@ void playerMove() {
           secondRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
-          if (!desireRow[playerMove].noVisualEmpty) {
+          if (secondRow[playerMove].noVisualEmpty) {
             secondRow[playerMove].stones = 0;
           }
+          print("El cuervo tiene $crowStones piedras.");
           crowMove();
           printGarden();
           break;
@@ -460,9 +634,10 @@ void playerMove() {
           desireRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
-          if (!desireRow[playerMove].noVisualEmpty) {
+          if (desireRow[playerMove].noVisualEmpty) {
             desireRow[playerMove].stones = 0;
           }
+          print("El cuervo tiene $crowStones piedras.");
           crowMove();
           printGarden();
           break;
@@ -474,7 +649,7 @@ void playerMove() {
     garden.newGarden();
     player.lastMove();
     player.newRound();
-    crowAndBountyActions(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
+    roundFinish(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
     getCards();
     printGarden();
   } else {
@@ -486,9 +661,10 @@ void playerMove() {
           firstRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 0, firstRow[playerMove]);
-          if (!desireRow[playerMove].noVisualEmpty) {
+          if (firstRow[playerMove].noVisualEmpty) {
             firstRow[playerMove].stones = 0;
           }
+          print("El cuervo tiene $crowStones piedras.");
           crowMove();
           printGarden();
           break;
@@ -497,9 +673,10 @@ void playerMove() {
           secondRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 1, secondRow[playerMove]);
-          if (!desireRow[playerMove].noVisualEmpty) {
+          if (secondRow[playerMove].noVisualEmpty) {
             secondRow[playerMove].stones = 0;
           }
+          print("El cuervo tiene $crowStones piedras.");
           crowMove();
           printGarden();
           break;
@@ -508,9 +685,10 @@ void playerMove() {
           desireRow[playerMove].playerHere = true;
           deletePastCard();
           player.setChoosedCard(playerMove, 2, desireRow[playerMove]);
-          if (!desireRow[playerMove].noVisualEmpty) {
+          if (desireRow[playerMove].noVisualEmpty) {
             desireRow[playerMove].stones = 0;
           }
+          print("El cuervo tiene $crowStones piedras.");
           crowMove();
           printGarden();
           break;
@@ -522,7 +700,7 @@ void playerMove() {
     garden.newGarden();
     player.lastMove();
     player.newRound();
-    crowAndBountyActions(); //Debe de estar arriba de getCards porque si no no podra hacer bien la revision de piedras del cuervo
+    roundFinish(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
     getCards();
     printGarden();
   }

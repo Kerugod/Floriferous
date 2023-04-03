@@ -17,7 +17,7 @@ class Player {
   var multiConDesireWon = List.empty(growable: true);
   var flowerWon = List.empty(growable: true);
 
-  var points = 0;
+  var stones = 0;
 
   List<dynamic> getVaseWon() {
     return vaseWon;
@@ -61,7 +61,7 @@ class Player {
     playerPosition!.rowPosition = row;
     if (!card.noVisualEmpty) {
       if (card.stones > 0) {
-        points += card.stones;
+        stones += card.stones;
       }
       if (card.typeCard == "Garden") {
         //Saber que tipo de carta es
