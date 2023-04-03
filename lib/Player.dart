@@ -90,6 +90,8 @@ class Player {
     }
   }
 
+  void calculateResult() {}
+
   PlayerPosition getPlayerPosition() {
     return playerPosition!;
   }

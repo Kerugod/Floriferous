@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:floriferous_console/cards/BountyCards.dart';
 import 'package:floriferous_console/cards/Cards.dart';
 import 'package:floriferous_console/cards/decks/CrowDeck.dart';
 import 'package:floriferous_console/cards/desire_cards/DesireCards.dart';
@@ -9,6 +10,7 @@ import 'package:floriferous_console/cards/desire_cards/SimpleDesireCard.dart';
 import 'package:floriferous_console/cards/garden_cards/FlowerCards.dart';
 import 'package:floriferous_console/cards/garden_cards/GardenCards.dart';
 import 'package:floriferous_console/cards/garden_cards/Vase.dart';
+import 'package:collection/collection.dart';
 
 import 'Garden.dart';
 import 'Player.dart';
@@ -40,6 +42,7 @@ void main() {
         do {
           playerMove();
         } while (player.getRounds() < 3); //Numero de rondas
+
         break;
       case "N":
         print("Vuelva pronto :D");
@@ -64,10 +67,40 @@ void printGarden() {
   var spaceBounty = "                                       ";
 
   var printBounty =
-      "  ||${normaliceLength(" (${bountyRow[0].conditions[0]}|${bountyRow[0].conditions[1]}|${bountyRow[0].conditions[2]})*5|3|2 ")}||${normaliceLength(" (${bountyRow[1].conditions[0]}|${bountyRow[1].conditions[1]}|${bountyRow[1].conditions[2]})*5|3|2 ")}||${normaliceLength(" (${bountyRow[2].conditions[0]}|${bountyRow[2].conditions[1]}|${bountyRow[2].conditions[2]})*5|3|2 ")}||";
+      "  ||${normaliceLength(" (${bountyRow[0].conditions[0]}|${bountyRow[0].conditions[1]}|${bountyRow[0].conditions[2]}) ")}||${normaliceLength(" (${bountyRow[1].conditions[0]}|${bountyRow[1].conditions[1]}|${bountyRow[1].conditions[2]}) ")}||${normaliceLength(" (${bountyRow[2].conditions[0]}|${bountyRow[2].conditions[1]}|${bountyRow[2].conditions[2]}) ")}||";
+
+  print(bountyRow[0].completeRound);
+  var bountyRound1 = bountyRow[0].completeRound == -1
+      ? "5|3|2"
+      : bountyRow[0].completeRound == 0
+          ? "*|3|2"
+          : bountyRow[0].completeRound == 1
+              ? "5|*|2"
+              : "5|3|*";
+  print(bountyRow[0].completeRound);
+  var bountyRound2 = bountyRow[1].completeRound == -1
+      ? "5|3|2"
+      : bountyRow[1].completeRound == 0
+          ? "*|3|2"
+          : bountyRow[1].completeRound == 1
+              ? "5|*|2"
+              : "5|3|*";
+  print(bountyRow[2].completeRound);
+  var bountyRound3 = bountyRow[2].completeRound == -1
+      ? "5|3|2"
+      : bountyRow[2].completeRound == 0
+          ? "*|3|2"
+          : bountyRow[2].completeRound == 1
+              ? "5|*|2"
+              : "5|3|*";
+
+  var printBountyPoints =
+      "  ||${normaliceLength("$bountyRound1")}||${normaliceLength("$bountyRound2")}||${normaliceLength("$bountyRound3")}||";
+
   var line = "  ${_lineEquals(printBounty)}";
   print(spaceBounty + line);
   print(spaceBounty + printBounty);
+  print(spaceBounty + printBountyPoints);
   print(spaceBounty + line);
 
   var printFirst =
@@ -487,6 +520,24 @@ void roundFinish() {
       }
     } while (play != "Y" && play != "N");
   }
+  //La parte de las cartas de recompensa
+  Function eq = const ListEquality().equals;
+  for (BountyCards bountyCard in bountyRow) {
+    for (FLowerCards flowerCard in player.flowerWon) {
+      int index = 0;
+      for (String condition in bountyCard.conditions) {
+        if (condition.compareTo(flowerCard.typeFlower) == 0 ||
+            condition.compareTo(flowerCard.color) == 0 ||
+            condition.compareTo(flowerCard.bug) == 0) {
+          bountyCard.completeCondition[index] = true;
+        }
+        index++;
+      }
+    }
+    if (eq(bountyCard.completeCondition, [true, true, true])) {
+      bountyCard.completeBounty(player.getRounds());
+    }
+  }
 }
 
 void stealCard() {
@@ -647,9 +698,9 @@ void playerMove() {
       }
     } while (player.getPlayerPosition().columnPosition < 4);
     garden.newGarden();
+    roundFinish(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
     player.lastMove();
     player.newRound();
-    roundFinish(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
     getCards();
     printGarden();
   } else {
@@ -698,9 +749,9 @@ void playerMove() {
       }
     } while (player.getPlayerPosition().columnPosition > 0);
     garden.newGarden();
+    roundFinish(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
     player.lastMove();
     player.newRound();
-    roundFinish(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
     getCards();
     printGarden();
   }
