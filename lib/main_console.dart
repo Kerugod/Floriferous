@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:floriferous_console/Crow.dart';
 import 'package:floriferous_console/cards/Cards.dart';
 import 'package:floriferous_console/cards/decks/CrowDeck.dart';
 import 'package:floriferous_console/cards/desire_cards/DesireCards.dart';
@@ -16,7 +15,7 @@ import 'Player.dart';
 
 var player = Player();
 var garden = Garden();
-var crow = Crow();
+var crowStones = 0;
 var crowDeck = CrowDeck();
 
 var firstRow = garden.getFirstRow();
@@ -24,14 +23,9 @@ var secondRow = garden.getSecondRow();
 var desireRow = garden.getDesireRow();
 var bountyRow = garden.getBountyRow();
 
+const int largeCard = 37;
+
 void main() {
-  firstRow[1].twist = true;
-  firstRow[3].twist = true;
-
-  secondRow[0].stones = 1;
-  secondRow[2].stones = 1;
-  secondRow[4].stones = 1;
-
   print("Bienvenido A floriferous!!!!!");
   print("¿Quieres jugar? Y/N");
   var play;
@@ -64,102 +58,53 @@ void getCards() {
 }
 
 void printGarden() {
-  var printRow = "  || (" + //Cartas de recompensa
-      bountyRow[0].conditions[0] +
-      "|" +
-      bountyRow[0].conditions[1] +
-      "|" +
-      bountyRow[0].conditions[2] +
-      ")*5|3|2 || (" +
-      bountyRow[1].conditions[0] +
-      "|" +
-      bountyRow[1].conditions[1] +
-      "|" +
-      bountyRow[1].conditions[2] +
-      ")*5|3|2 || (" +
-      bountyRow[2].conditions[0] +
-      "|" +
-      bountyRow[2].conditions[1] +
-      "|" +
-      bountyRow[2].conditions[2] +
-      ")*5|3|2 ||";
+  // (32 carta mas grande)*5 = 160 + limite que son 12 (Si fueran 5 de ellas) = 172 por linea
 
-  var line = "  " + _lineEquals(printRow);
+  var spaceBounty = "                                       ";
 
-  print("  Cartas de recompensa:");
+  var printBounty =
+      "  ||${normaliceLength(" (${bountyRow[0].conditions[0]}|${bountyRow[0].conditions[1]}|${bountyRow[0].conditions[2]})*5|3|2 ")}||${normaliceLength(" (${bountyRow[1].conditions[0]}|${bountyRow[1].conditions[1]}|${bountyRow[1].conditions[2]})*5|3|2 ")}||${normaliceLength(" (${bountyRow[2].conditions[0]}|${bountyRow[2].conditions[1]}|${bountyRow[2].conditions[2]})*5|3|2 ")}||";
+  var line = "  ${_lineEquals(printBounty)}";
+  print(spaceBounty + line);
+  print(spaceBounty + printBounty);
+  print(spaceBounty + line);
+
+  var printFirst =
+      "  ||${normaliceLength(_addAndTwistFCard(firstRow[0]))}||${normaliceLength(_addAndTwistFCard(firstRow[1]))}||${normaliceLength(_addAndTwistFCard(firstRow[2]))}||${normaliceLength(_addAndTwistFCard(firstRow[3]))}||${normaliceLength(_addAndTwistFCard(firstRow[4]))}||";
+  line = "  ${_lineEquals(printFirst)}";
   print(line);
-  print(printRow);
+  print(printFirst);
+  print(line);
+  var printSecond =
+      "  ||${normaliceLength(_addAndTwistFCard(secondRow[0]))}||${normaliceLength(_addAndTwistFCard(secondRow[1]))}||${normaliceLength(_addAndTwistFCard(secondRow[2]))}||${normaliceLength(_addAndTwistFCard(secondRow[3]))}||${normaliceLength(_addAndTwistFCard(secondRow[4]))}||";
+
+  print(line);
+  print(printSecond);
   print(line);
 
-  printRow = "  || " + //Cartas de flor, primera fila
-      _addAndTwistFCard(firstRow[0]) +
-      " || " +
-      _addAndTwistFCard(firstRow[1]) +
-      " || " +
-      _addAndTwistFCard(firstRow[2]) +
-      " || " +
-      _addAndTwistFCard(firstRow[3]) +
-      " || " +
-      _addAndTwistFCard(firstRow[4]) +
-      " ||";
+  var printDesire =
+      "  ||${normaliceLength(_addAndTwistDCard(desireRow[0]))}||${normaliceLength(_addAndTwistDCard(desireRow[1]))}||${normaliceLength(_addAndTwistDCard(desireRow[2]))}||${normaliceLength(_addAndTwistDCard(desireRow[3]))}||${normaliceLength(_addAndTwistDCard(desireRow[4]))}||";
 
-  line = "  " + _lineEquals(printRow);
-  print("  Cartas de jardin:");
   print(line);
-  print(printRow);
+  print(printDesire);
   print(line);
 
-  printRow = "  || " + // Cartas de flor, segunda linea
-      _addAndTwistFCard(secondRow[0]) +
-      " || " +
-      _addAndTwistFCard(secondRow[1]) +
-      " || " +
-      _addAndTwistFCard(secondRow[2]) +
-      " || " +
-      _addAndTwistFCard(secondRow[3]) +
-      " || " +
-      _addAndTwistFCard(secondRow[4]) +
-      " ||";
-  line = "  " + _lineEquals(printRow);
   if (player.getRounds() != 1 &&
       player.getPlayerPosition().columnPosition == -1) {
     print("█");
   } else if (player.getRounds() == 1 &&
       player.getPlayerPosition().columnPosition == 5) {
-    print(
-        "                                                                                                                                █");
+    print("${line.replaceAll("=", " ")}   █");
   }
-  print(line);
-  print(printRow);
-  print(line);
 
-  print("  Cartas de deseo:");
-  printRow = "  || " + // Cartas de deseo
-      _addAndTwistDCard(desireRow[0]) +
-      " || " +
-      _addAndTwistDCard(desireRow[1]) +
-      " || " +
-      _addAndTwistDCard(desireRow[2]) +
-      " || " +
-      _addAndTwistDCard(desireRow[3]) +
-      " || " +
-      _addAndTwistDCard(desireRow[4]) +
-      " || ";
-  line = "  " + _lineEquals(printRow);
-  print(line);
-  print(printRow);
-  print(line);
+  print(line.replaceAll("=", "_"));
 
-  print(
-      "___________________________________________________________________________________________________________________________________");
+  print(line.replaceAll("=", "_"));
 
-  print(
-      "___________________________________________________________________________________________________________________________________");
-
-  printMyDeck();
+  printMyDeck(line);
 }
 
-void printMyDeck() {
+void printMyDeck(String backLine) {
   var printRow = "";
   print("  Mis piedras: ${player.points}");
   print("  Mis cartas de jardin:");
@@ -171,11 +116,13 @@ void printMyDeck() {
     printRow += "|| " + _visibilityDeckCard(flowerWon[i]) + " ||";
   }
 
-  var line = "  " + _lineEquals(printRow);
+  var line = "  ${_lineEquals("$printRow||")}";
 
-  print(line);
-  print(printRow);
-  print(line);
+  if (flowerWon.isNotEmpty) {
+    print(line);
+    print("  $printRow");
+    print(line);
+  }
 
   printRow = "";
 
@@ -183,9 +130,13 @@ void printMyDeck() {
     printRow += "|| " + _visibilityDeckCard(vaseWon[i]) + " ||";
   }
 
-  print(line);
-  print(printRow);
-  print(line);
+  line = "  ${_lineEquals("$printRow||")}";
+
+  if (vaseWon.isNotEmpty) {
+    print(line);
+    print("  $printRow");
+    print(line);
+  }
 
   print("  Mis cartas de deseo:");
 
@@ -198,10 +149,13 @@ void printMyDeck() {
     printRow += "|| " + _visibilityDeckCard(simpleWon[i]) + " ||";
   }
 
-  line = "  " + _lineEquals(printRow);
-  print(line);
-  print(printRow);
-  print(line);
+  line = "  ${_lineEquals("$printRow||")}";
+
+  if (simpleWon.isNotEmpty) {
+    print(line);
+    print("  $printRow");
+    print(line);
+  }
 
   printRow = "";
 
@@ -209,15 +163,42 @@ void printMyDeck() {
     printRow += "|| " + _visibilityDeckCard(multiWon[i]) + " ||";
   }
 
-  line = "  " + _lineEquals(printRow);
-  print(line);
-  print(printRow);
-  print(line);
-  print(
-      "***********************************************************************************************************************************");
+  line = "  ${_lineEquals("$printRow||")}";
+  if (multiWon.isNotEmpty) {
+    print(line);
+    print("  $printRow");
+    print(line);
+  }
+  print(backLine.replaceAll("=", "*"));
 }
 
 //Metodos de soporte
+
+String normaliceLength(String value) {
+  // Este método pertenece a la clase main_console.dart
+  if (value.length < largeCard) {
+    var diference = largeCard - value.length;
+    if (diference % 2 == 0) {
+      var back = "";
+      var mid = diference ~/= 2;
+      for (int i = 0; i < mid; i++) {
+        back += " ";
+        value += " ";
+      }
+      value = back + value;
+    } else {
+      var back = "";
+      var mid = diference ~/= 2;
+      for (int i = 0; i < mid; i++) {
+        back += " ";
+        value += " ";
+      }
+      value = " $back$value";
+    }
+  }
+
+  return value;
+}
 
 String _lineEquals(String value) {
   var line = "";
@@ -245,18 +226,6 @@ String _addAndTwistFCard(GardenCards gardenCard) {
   return card;
 }
 
-String _visibilityDeckCard(Cards desireCard) {
-  var card = "";
-  if (desireCard.typeCard.compareTo("Garden") == 0) {
-    desireCard = desireCard as GardenCards;
-    card = _obtainFlowerData(desireCard);
-  } else {
-    desireCard = desireCard as DesireCards;
-    card = _obtainDesireData(desireCard);
-  }
-  return card;
-}
-
 String _addAndTwistDCard(DesireCards desireCard) {
   var card = "";
   if (desireCard.playerHere) {
@@ -271,6 +240,18 @@ String _addAndTwistDCard(DesireCards desireCard) {
     for (var i = 0; i < desireCard.stones; i++) {
       card += "@";
     }
+  }
+  return card;
+}
+
+String _visibilityDeckCard(Cards desireCard) {
+  var card = "";
+  if (desireCard.typeCard.compareTo("Garden") == 0) {
+    desireCard = desireCard as GardenCards;
+    card = _obtainFlowerData(desireCard);
+  } else {
+    desireCard = desireCard as DesireCards;
+    card = _obtainDesireData(desireCard);
   }
   return card;
 }
@@ -360,6 +341,7 @@ void crowMove() {
           break;
         case 1:
           secondRow[cardChange].twist = true;
+          secondRow[cardChange].stones = 0;
           break;
         case 2:
           desireRow[cardChange].twist = true;
@@ -370,17 +352,17 @@ void crowMove() {
         case 0:
           firstRow[cardChange].empty = true;
           firstRow[cardChange].noVisualEmpty = true;
-          firstRow[cardChange].stones = firstRow[cardChange].stones + 1;
+          firstRow[cardChange].stones = 1;
           break;
         case 1:
           secondRow[cardChange].empty = true;
           secondRow[cardChange].noVisualEmpty = true;
-          secondRow[cardChange].stones = secondRow[cardChange].stones + 1;
+          secondRow[cardChange].stones = 1;
           break;
         case 2:
           desireRow[cardChange].empty = true;
           desireRow[cardChange].noVisualEmpty = true;
-          desireRow[cardChange].stones = desireRow[cardChange].stones + 1;
+          desireRow[cardChange].stones = 1;
           break;
       }
     } else {
@@ -388,17 +370,17 @@ void crowMove() {
         case 0:
           firstRow[cardChange].empty = true;
           firstRow[cardChange].noVisualEmpty = true;
-          firstRow[cardChange].stones = firstRow[cardChange].stones + 2;
+          firstRow[cardChange].stones = 2;
           break;
         case 1:
           secondRow[cardChange].empty = true;
           secondRow[cardChange].noVisualEmpty = true;
-          secondRow[cardChange].stones = secondRow[cardChange].stones + 2;
+          secondRow[cardChange].stones = 2;
           break;
         case 2:
           desireRow[cardChange].empty = true;
           desireRow[cardChange].noVisualEmpty = true;
-          desireRow[cardChange].stones = desireRow[cardChange].stones + 2;
+          desireRow[cardChange].stones = 2;
           break;
       }
     }
@@ -426,7 +408,22 @@ void crowMove() {
         action = "colocar dos piedras en la";
         break;
     }
+    print("El cuervo tiene $crowStones piedras.");
     print("El cuervo dice \"" + action + " " + row + " carta\"");
+  }
+}
+
+void crowAndBountyActions() {
+  for (var i = 0; i < 5; i++) {
+    if (firstRow[i].stones > 0 && firstRow[i].empty == true) {
+      crowStones += firstRow[i].stones;
+    }
+    if (secondRow[i].stones > 0 && secondRow[i].empty == true) {
+      crowStones += secondRow[i].stones;
+    }
+    if (desireRow[i].stones > 0 && desireRow[i].empty == true) {
+      crowStones += desireRow[i].stones;
+    }
   }
 }
 
@@ -475,9 +472,10 @@ void playerMove() {
       }
     } while (player.getPlayerPosition().columnPosition < 4);
     garden.newGarden();
-    getCards();
     player.lastMove();
     player.newRound();
+    crowAndBountyActions(); //Debe de estar arriba de "getCards" porque si no no podra hacer bien la revision de piedras del cuervo
+    getCards();
     printGarden();
   } else {
     do {
@@ -524,6 +522,7 @@ void playerMove() {
     garden.newGarden();
     player.lastMove();
     player.newRound();
+    crowAndBountyActions(); //Debe de estar arriba de getCards porque si no no podra hacer bien la revision de piedras del cuervo
     getCards();
     printGarden();
   }

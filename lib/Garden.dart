@@ -57,6 +57,13 @@ class Garden {
     for (int i = 0; i < 5; i++) {
       _desireRow.add(desireDeck.obtainCard());
     }
+
+    _firstRow[1].twist = true;
+    _firstRow[3].twist = true;
+
+    _secondRow[0].stones = 1;
+    _secondRow[2].stones = 1;
+    _secondRow[4].stones = 1;
   }
 
   void _randomGardenCards() {
