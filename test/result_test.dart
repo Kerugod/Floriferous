@@ -3,6 +3,7 @@ import 'package:floriferous_console/Player.dart';
 import 'package:floriferous_console/cards/desire_cards/MultiConDesireCards.dart';
 import 'package:floriferous_console/cards/desire_cards/SimpleDesireCard.dart';
 import 'package:floriferous_console/cards/garden_cards/FlowerCards.dart';
+import 'package:floriferous_console/cards/garden_cards/Vase.dart';
 import 'package:test/expect.dart';
 import 'package:test/test.dart';
 
@@ -115,6 +116,13 @@ void main() {
           expect(player.points, 38);
         });
       });
+    });
+    test("El cálculo de los floreros no funciona", () {
+      player.points = 0;
+      player.vaseWon.add(Vase(["Lily", "Red", "Moth"]));
+      player.vaseWon.add(Vase(["Tulip", "White", "Bettle"]));
+      player.calculateResult();
+      expect(player.points, 46);
     });
   });
 }

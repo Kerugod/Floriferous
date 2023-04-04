@@ -12,8 +12,8 @@ import 'package:floriferous_console/cards/garden_cards/GardenCards.dart';
 import 'package:floriferous_console/cards/garden_cards/Vase.dart';
 import 'package:collection/collection.dart';
 
-import 'Garden.dart';
-import 'Player.dart';
+import 'package:floriferous_console/Garden.dart';
+import 'package:floriferous_console/Player.dart';
 
 var player = Player();
 var garden = Garden();
@@ -67,7 +67,6 @@ void printGarden() {
   var printBounty =
       "  ||${normaliceLength(" (${bountyRow[0].conditions[0]}|${bountyRow[0].conditions[1]}|${bountyRow[0].conditions[2]}) ")}||${normaliceLength(" (${bountyRow[1].conditions[0]}|${bountyRow[1].conditions[1]}|${bountyRow[1].conditions[2]}) ")}||${normaliceLength(" (${bountyRow[2].conditions[0]}|${bountyRow[2].conditions[1]}|${bountyRow[2].conditions[2]}) ")}||";
 
-  print(bountyRow[0].completeRound);
   var bountyRound1 = bountyRow[0].completeRound == -1
       ? "5|3|2"
       : bountyRow[0].completeRound == 0
@@ -75,7 +74,6 @@ void printGarden() {
           : bountyRow[0].completeRound == 1
               ? "5|*|2"
               : "5|3|*";
-  print(bountyRow[0].completeRound);
   var bountyRound2 = bountyRow[1].completeRound == -1
       ? "5|3|2"
       : bountyRow[1].completeRound == 0
@@ -83,7 +81,6 @@ void printGarden() {
           : bountyRow[1].completeRound == 1
               ? "5|*|2"
               : "5|3|*";
-  print(bountyRow[2].completeRound);
   var bountyRound3 = bountyRow[2].completeRound == -1
       ? "5|3|2"
       : bountyRow[2].completeRound == 0
@@ -457,16 +454,44 @@ void roundFinish() {
     }
   }
 
-  print("El cuervo tiene $crowStones piedras.");
-
-  if (crowStones >= 4) {
-    print("El cuervo tiene cuatro o más piedras.");
-
-    if ((crowStones - player.stones) < 4) {
+  if (player.getRounds() < 2) {
+    if (crowStones >= 4) {
+      print("El cuervo tiene $crowStones piedras.");
+      if ((crowStones - player.stones) < 4) {
+        var play;
+        do {
+          print(
+              "Tienes las suficientes piedras para que el cuervo no te quite una carta (Recuerda que esta acción eliminará la totalidad de tus piedras. A menos de que tengas más que el cuervo). ¿Deseas usarlas? (Y/N)");
+          play = stdin.readLineSync(encoding: utf8);
+          switch (play) {
+            case "Y":
+              if (crowStones <= player.stones) {
+                player.stones -= crowStones;
+                crowStones = 0;
+              } else {
+                crowStones -= player.stones;
+                player.stones = 0;
+              }
+              print("**** NUEVA RONDA ****");
+              print("El cuervo tiene $crowStones piedras.");
+              break;
+            case "N":
+              stealCard();
+              break;
+            default:
+              print("Introduzca una de las opciones: \"Y/N\"");
+              break;
+          }
+        } while (play != "Y" && play != "N");
+      } else {
+        stealCard();
+      }
+    } else if (player.stones > 0 && crowStones > 0) {
+      print(
+          "¿Deseas quitarle piedras al cuervo? (Esta acción eliminará la totalidad de tus piedras. A menos de que tengas más que el cuervo) (Y/N)");
       var play;
+
       do {
-        print(
-            "Tienes las suficientes piedras para que el cuervo no te quite una carta (Recuerda que esta acción eliminará la totalidad de tus piedras. A menos de que tengas más que el cuervo). ¿Deseas usarlas? (Y/N)");
         play = stdin.readLineSync(encoding: utf8);
         switch (play) {
           case "Y":
@@ -481,43 +506,15 @@ void roundFinish() {
             print("El cuervo tiene $crowStones piedras.");
             break;
           case "N":
-            stealCard();
             break;
           default:
             print("Introduzca una de las opciones: \"Y/N\"");
             break;
         }
       } while (play != "Y" && play != "N");
-    } else {
-      stealCard();
     }
-  } else if (player.stones > 0) {
-    print(
-        "¿Deseas quitarle piedras al cuervo? (Esta acción eliminará la totalidad de tus piedras. A menos de que tengas más que el cuervo) (Y/N)");
-    var play;
-
-    do {
-      play = stdin.readLineSync(encoding: utf8);
-      switch (play) {
-        case "Y":
-          if (crowStones <= player.stones) {
-            player.stones -= crowStones;
-            crowStones = 0;
-          } else {
-            crowStones -= player.stones;
-            player.stones = 0;
-          }
-          print("**** NUEVA RONDA ****");
-          print("El cuervo tiene $crowStones piedras.");
-          break;
-        case "N":
-          break;
-        default:
-          print("Introduzca una de las opciones: \"Y/N\"");
-          break;
-      }
-    } while (play != "Y" && play != "N");
   }
+
   //La parte de las cartas de recompensa
   Function eq = const ListEquality().equals;
   for (BountyCards bountyCard in bountyRow) {
@@ -579,8 +576,6 @@ void stealCard() {
             print("¿Cuál carta eliminará?");
             try {
               var eliminar = int.parse(stdin.readLineSync() as String);
-              print(
-                  "${eliminar > 0}-$eliminar|0, ${eliminar <= player.simpleDesireWon.length}, ${player.simpleDesireWon.length} AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
               if (eliminar > 0 && eliminar <= player.vaseWon.length) {
                 player.vaseWon.removeWhere(
                     (element) => element == player.vaseWon[eliminar - 1]);

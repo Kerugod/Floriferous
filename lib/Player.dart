@@ -8,6 +8,7 @@ import 'cards/desire_cards/SimpleDesireCard.dart';
 import 'cards/garden_cards/FlowerCards.dart';
 import 'cards/garden_cards/GardenCards.dart';
 import 'cards/garden_cards/Vase.dart';
+import 'package:collection/collection.dart';
 
 class Player {
   PlayerPosition? playerPosition;
@@ -108,7 +109,31 @@ class Player {
       }
     }
     //Calcular puntos floreros
-
+    Function eq = const ListEquality().equals;
+    for (Vase vase in vaseWon) {
+      for (FLowerCards fLowerCard in flowerWon) {
+        if (!eq(vase.conditionsComplete, [true, true, true])) {
+          if (vase.conditions[0].compareTo(fLowerCard.typeFlower) == 0) {
+            vase.conditionsComplete[0] = true;
+          }
+          if (vase.conditions[1].compareTo(fLowerCard.color) == 0) {
+            vase.conditionsComplete[1] = true;
+          }
+          if (vase.conditions[2].compareTo(fLowerCard.bug) == 0) {
+            vase.conditionsComplete[2] = true;
+          }
+        }
+      }
+      var count = -1;
+      for (bool getPoints in vase.conditionsComplete) {
+        if (getPoints) {
+          count++;
+        }
+      }
+      if (count > -1) {
+        points += vase.points[count];
+      }
+    }
     //Calcular puntos piedras
     points += stones ~/ 2;
     //Calcular cartas de deseo
