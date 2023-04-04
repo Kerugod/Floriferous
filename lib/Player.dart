@@ -107,6 +107,8 @@ class Player {
           break;
       }
     }
+    //Calcular puntos floreros
+
     //Calcular puntos piedras
     points += stones ~/ 2;
     //Calcular cartas de deseo
@@ -223,7 +225,7 @@ class Player {
           }
         }
         if (mayorOcurrency > 0) {
-          points = multiConDesireCard.points[mayorOcurrency - 1];
+          points += multiConDesireCard.points[mayorOcurrency - 1] as int;
         }
       } else {
         List<Ocurrency> ocurrency = List.empty(growable: true);
@@ -239,9 +241,10 @@ class Player {
               for (Ocurrency diferentFlowers in fake) {
                 //En caso de que la carta seleccionada tenga un bicho distinto agregarlo o si ya existe contralo. Y determinar el m
                 if (fLowerCard.bug
-                            .compareTo(diferentFlowers.differentTyperFlower) !=
-                        0 &&
-                    index == ocurrency.length - 1) {
+                        .compareTo(diferentFlowers.differentTyperFlower) ==
+                    0) {
+                  break;
+                } else if (index == ocurrency.length - 1) {
                   ocurrency.add(Ocurrency(1, fLowerCard.bug));
                 }
                 index++;
@@ -259,9 +262,10 @@ class Player {
             for (Ocurrency diferentFlowers in fake) {
               //En caso de que la carta seleccionada tenga un bicho distinto agregarlo o si ya existe contralo. Y determinar el m
               if (fLowerCard.typeFlower
-                          .compareTo(diferentFlowers.differentTyperFlower) !=
-                      0 &&
-                  index == ocurrency.length - 1) {
+                      .compareTo(diferentFlowers.differentTyperFlower) ==
+                  0) {
+                break;
+              } else if (index == ocurrency.length - 1) {
                 ocurrency.add(Ocurrency(1, fLowerCard.typeFlower));
               }
               index++;
@@ -276,9 +280,10 @@ class Player {
             for (Ocurrency diferentFlowers in fake) {
               //En caso de que la carta seleccionada tenga un bicho distinto agregarlo o si ya existe contralo. Y determinar el m
               if (fLowerCard.color
-                          .compareTo(diferentFlowers.differentTyperFlower) !=
-                      0 &&
-                  index == ocurrency.length - 1) {
+                      .compareTo(diferentFlowers.differentTyperFlower) ==
+                  0) {
+                break;
+              } else if (index == ocurrency.length - 1) {
                 ocurrency.add(Ocurrency(1, fLowerCard.color));
               }
               index++;
@@ -290,7 +295,7 @@ class Player {
         }
 
         if (ocurrency.isNotEmpty) {
-          points = multiConDesireCard.points[ocurrency.length - 1];
+          points += multiConDesireCard.points[ocurrency.length - 1] as int;
         }
       }
     }
