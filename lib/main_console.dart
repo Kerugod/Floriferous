@@ -42,7 +42,7 @@ void main() {
         do {
           playerMove();
         } while (player.getRounds() < 3); //Numero de rondas
-
+        player.calculateResult();
         break;
       case "N":
         print("Vuelva pronto :D");
@@ -62,8 +62,6 @@ void getCards() {
 }
 
 void printGarden() {
-  // (32 carta mas grande)*5 = 160 + limite que son 12 (Si fueran 5 de ellas) = 172 por linea
-
   var spaceBounty = "                                       ";
 
   var printBounty =
@@ -580,7 +578,9 @@ void stealCard() {
           } else {
             print("¿Cuál carta eliminará?");
             try {
-              var eliminar = stdin.readByteSync();
+              var eliminar = int.parse(stdin.readLineSync() as String);
+              print(
+                  "${eliminar > 0}-$eliminar|0, ${eliminar <= player.simpleDesireWon.length}, ${player.simpleDesireWon.length} AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
               if (eliminar > 0 && eliminar <= player.vaseWon.length) {
                 player.vaseWon.removeWhere(
                     (element) => element == player.vaseWon[eliminar - 1]);
@@ -602,7 +602,7 @@ void stealCard() {
           } else {
             print("¿Cuál carta eliminará?");
             try {
-              var eliminar = stdin.readByteSync();
+              var eliminar = int.parse(stdin.readLineSync() as String);
               if (eliminar > 0 && eliminar <= player.simpleDesireWon.length) {
                 player.simpleDesireWon.removeWhere((element) =>
                     element == player.simpleDesireWon[eliminar - 1]);
@@ -624,7 +624,7 @@ void stealCard() {
           } else {
             print("¿Cuál carta eliminará?");
             try {
-              var eliminar = stdin.readByteSync();
+              var eliminar = int.parse(stdin.readLineSync() as String);
               if (eliminar > 0 && eliminar <= player.multiConDesireWon.length) {
                 player.multiConDesireWon.removeWhere((element) =>
                     element == player.multiConDesireWon[eliminar - 1]);
